@@ -1,4 +1,4 @@
-package com.example.medical_record.entities;
+package com.example.medical_record.data.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.example.medical_record.entities;
+package com.example.medical_record.data.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -10,13 +10,14 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "doctors")
 @Getter
 @Setter
-public class Patient
+public class Doctor
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
     @NotBlank(message = "First name cannot be blank!")
@@ -31,17 +32,19 @@ public class Patient
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Last name must contain only letters!")
     private String lastName;
 
-    @Column(name = "is_health_insurance_paid", nullable = false)
-    private boolean isHealthInsurancePaid;
+    @NotBlank(message = "Specialty name cannot be blank!")
+    @Size(max = 30, message = "Specialty has to be up to 20 characters!")
+    @Column(name = "specialty", nullable = false, length = 20)
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Specialty must contain only letters!")
+    private String specialty;
 
-    @ManyToOne
-    @JoinColumn(name = "personal_doctor_id")
-    private Doctor personalDoctor;
+    @OneToMany(mappedBy = "personalDoctor", cascade = CascadeType.ALL)
+    private Set<Patient> registeredPatients;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<Examination> examinations;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<HospitalRecord> hospitalRecords;
 
 }
