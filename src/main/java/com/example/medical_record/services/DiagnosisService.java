@@ -1,10 +1,20 @@
 package com.example.medical_record.services;
 
+import com.example.medical_record.DTOs.DiagnosisRequestDTO;
+import com.example.medical_record.DTOs.DiagnosisResponseDTO;
 import com.example.medical_record.data.entities.Diagnosis;
 
 import java.util.List;
 
 public interface DiagnosisService
 {
-    List<Diagnosis> getAllDiagnoses();
+    void createDiagnosis(DiagnosisRequestDTO diagnosis);
+
+    DiagnosisResponseDTO getDiagnosisById(Long id);
+
+    void updateDiagnosis(Long id, DiagnosisRequestDTO updatedDiagnosis);
+
+    void deleteDiagnosis(Long id);
+
+    List<DiagnosisResponseDTO> getAllDiagnoses();
 }

@@ -16,10 +16,6 @@ public class Diagnosis
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Submit to removal
-    @Column(nullable = false, unique = true)
-    private String name;
-
     @Column(nullable = false, unique = true)
     private String description;
 
