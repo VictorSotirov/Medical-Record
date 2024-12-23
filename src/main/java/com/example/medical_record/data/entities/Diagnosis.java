@@ -19,6 +19,6 @@ public class Diagnosis
     @Column(nullable = false, unique = true)
     private String description;
 
-    @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "diagnosis")
     private Set<Examination> examinations;
 }

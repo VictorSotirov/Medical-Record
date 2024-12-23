@@ -23,28 +23,28 @@ public class Doctor
     @NotBlank(message = "First name cannot be blank!")
     @Size(max = 30, message = "First name has to be up to 20 characters!")
     @Column(name = "first_name", nullable = false, length = 20)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "First name must contain only letters!")
+    //@Pattern(regexp = "^[a-zA-Z]+$", message = "First name must contain only letters!")
     private String firstName;
 
     @NotBlank(message = "Last name cannot be blank!")
     @Size(max = 30, message = "Last name has to be up to 20 characters!")
     @Column(name = "last_name", nullable = false, length = 20)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Last name must contain only letters!")
+    //@Pattern(regexp = "^[a-zA-Z]+$", message = "Last name must contain only letters!")
     private String lastName;
 
     @NotBlank(message = "Specialty name cannot be blank!")
     @Size(max = 30, message = "Specialty has to be up to 20 characters!")
     @Column(name = "specialty", nullable = false, length = 20)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Specialty must contain only letters!")
+    //@Pattern(regexp = "^[a-zA-Z]+$", message = "Specialty must contain only letters!")
     private String specialty;
 
-    @OneToMany(mappedBy = "personalDoctor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "personalDoctor")
     private Set<Patient> registeredPatients;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor")
     private Set<Examination> examinations;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor")
     private Set<HospitalRecord> hospitalRecords;
 
 }

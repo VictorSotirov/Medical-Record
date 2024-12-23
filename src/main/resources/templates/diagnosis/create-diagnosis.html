@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Create Diagnosis')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5" style="max-width: 600px">
+    <h2>Create New Diagnosis</h2>
+
+    <!-- Form for creating a new diagnosis -->
+    <form th:action="@{/diagnoses/create}" th:object="${diagnosis}" method="post">
+        <div class="form-group">
+            <textarea id="description" name="description" th:field="*{description}" class="form-control" placeholder="Enter diagnosis description" required rows="3"></textarea>
+
+            <!-- Error display for the 'description' field -->
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error text-danger"></div>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary w-100">Create Diagnosis</button>
+    </form>
+
+    <!-- Link to go back to the list of diagnoses -->
+    <a class="mt-3 d-block text-center" th:href="@{/diagnoses}">Back to Diagnoses List</a>
+</div>
+
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

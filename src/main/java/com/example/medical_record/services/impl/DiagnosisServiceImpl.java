@@ -17,6 +17,7 @@ public class DiagnosisServiceImpl implements DiagnosisService
 {
     private final DiagnosisRepository diagnosisRepository;
 
+    //CREATE DIAGNOSIS
     @Override
     public void createDiagnosis(DiagnosisRequestDTO diagnosisToCreate)
     {
@@ -25,14 +26,17 @@ public class DiagnosisServiceImpl implements DiagnosisService
         this.diagnosisRepository.save(diagnosis);
     }
 
+    //GET DIAGNOSIS BY ID
     @Override
     public DiagnosisResponseDTO getDiagnosisById(Long id)
     {
         Diagnosis diagnosis = this.diagnosisRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Diagnosis not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Diagnosis with id: " + id + " not found."));
+
         return mapToResponseDTO(diagnosis);
     }
 
+    //UPDATE DIAGNOSIS
     @Override
     public void updateDiagnosis(Long id, DiagnosisRequestDTO updatedDiagnosis)
     {
@@ -44,15 +48,16 @@ public class DiagnosisServiceImpl implements DiagnosisService
         this.diagnosisRepository.save(existingDiagnosis);
     }
 
-
+    //DELETE DIAGNOSIS
     @Override
     public void deleteDiagnosis(Long id) {
         Diagnosis diagnosis = this.diagnosisRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Diagnosis not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Diagnosis with id: " + id + " not found."));
 
         this.diagnosisRepository.delete(diagnosis);
     }
 
+    //GET ALL DIAGNOSES
     @Override
     public List<DiagnosisResponseDTO> getAllDiagnoses()
     {
