@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Edit Diagnosis')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5" style="max-width: 600px">
+    <h2>Edit Diagnosis</h2>
+    <form th:action="@{/diagnoses/edit/{id}(id=${diagnosis.id})}" th:object="${diagnosis}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-group">
+            <label for="description">Diagnosis Description</label>
+            <input type="text" id="description" name="description" th:field="*{description}" class="form-control" required>
+            <div th:if="${#fields.hasErrors('description')}">
+                <div th:errors="*{description}" class="error text-danger"></div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Save Diagnosis</button>
+    </form>
+    <a class="mt-2 mb-2" th:href="@{/diagnoses}">Back to diagnosis list</a>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

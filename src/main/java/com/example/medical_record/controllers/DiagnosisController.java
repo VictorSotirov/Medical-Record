@@ -2,6 +2,7 @@ package com.example.medical_record.controllers;
 
 import com.example.medical_record.DTOs.DiagnosisRequestDTO;
 import com.example.medical_record.DTOs.DiagnosisResponseDTO;
+import com.example.medical_record.data.entities.Diagnosis;
 import com.example.medical_record.services.DiagnosisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ public class DiagnosisController
 {
     private final DiagnosisService diagnosisService;
 
+    //GET ALL DIAGNOSES
     @GetMapping
     public String getDiagnoses(Model model)
     {
@@ -29,21 +31,23 @@ public class DiagnosisController
         return "diagnosis/diagnoses"; // Return the correct Thymeleaf template
     }
 
+    //GET SPECIFIC DIAGNOSIS
     @GetMapping("/{id}")
     public DiagnosisResponseDTO getDiagnosisById(@PathVariable Long id)
     {
         return this.diagnosisService.getDiagnosisById(id);
     }
 
+    //GET CREATE DIAGNOSIS FORM
     @GetMapping("/create")
-    public String createDiagnosis(Model model)
+    public String getCreateDiagnosisPage(Model model)
     {
         model.addAttribute("diagnosis", new DiagnosisRequestDTO());
 
         return "diagnosis/create-diagnosis";
     }
 
-
+    //SEND DIAGNOSIS FORM
     @PostMapping("/create")
     public String createDiagnosis(@ModelAttribute("diagnosis") DiagnosisRequestDTO diagnosisToCreate, BindingResult result) throws RuntimeException
     {
@@ -53,6 +57,39 @@ public class DiagnosisController
         }
 
         this.diagnosisService.createDiagnosis(diagnosisToCreate);
+
+        return "redirect:/diagnoses";
+    }
+
+    //GET EDIT DIAGNOSIS FORM
+    @GetMapping("/edit/{id}")
+    public String getEditDiagnosisPage(@PathVariable Long id, Model model)
+    {
+        DiagnosisResponseDTO responseFromDB = this.diagnosisService.getDiagnosisById(id);
+
+        model.addAttribute("diagnosis", responseFromDB);
+
+        return "diagnosis/edit-diagnosis";
+    }
+
+    //SEND EDIT DIAGNOSIS FORM
+    @PostMapping("/edit/{id}")
+    public String editDiagnosis(@PathVariable Long id, @ModelAttribute("diagnosis") DiagnosisRequestDTO diagnosisToEdit, BindingResult result) throws RuntimeException
+    {
+        if(result.hasErrors())
+        {
+            return "diagnosis/edit-diagnosis";
+        }
+
+        this.diagnosisService.updateDiagnosis(id, diagnosisToEdit);
+
+        return "redirect:/diagnoses"; // Redirect to the diagnoses list
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteDiagnosis(@PathVariable Long id)
+    {
+        this.diagnosisService.deleteDiagnosis(id);
 
         return "redirect:/diagnoses";
     }
