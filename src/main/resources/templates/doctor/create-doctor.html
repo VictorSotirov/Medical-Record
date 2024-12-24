@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Create Doctor')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5" style="max-width: 600px">
+    <h2>Create New Doctor</h2>
+
+    <!-- Form for creating a new doctor -->
+    <form th:action="@{/doctors/create}" th:object="${doctor}" method="post">
+        <!-- First Name Field -->
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" th:field="*{firstName}" class="form-control" placeholder="Enter first name" required>
+            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error text-danger"></div>
+        </div>
+
+        <!-- Last Name Field -->
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-control" placeholder="Enter last name" required>
+            <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error text-danger"></div>
+        </div>
+
+        <!-- Specialty Field -->
+        <div class="form-group">
+            <label for="specialty">Specialty</label>
+            <input type="text" id="specialty" name="specialty" th:field="*{specialty}" class="form-control" placeholder="Enter specialty" required>
+            <div th:if="${#fields.hasErrors('specialty')}" th:errors="*{specialty}" class="error text-danger"></div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">Create Doctor</button>
+    </form>
+
+    <!-- Link to go back to the list of doctors -->
+    <a class="mt-3 d-block text-center" th:href="@{/doctors}">Back to Doctors List</a>
+</div>
+
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

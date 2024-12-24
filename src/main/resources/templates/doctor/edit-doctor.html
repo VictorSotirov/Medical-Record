@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Edit Doctor')">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5" style="max-width: 600px">
+  <h2>Edit Doctor</h2>
+  <form th:action="@{/doctors/edit/{id}(id=${doctor.id})}" th:object="${doctor}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
+    <!-- First Name Field -->
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" name="firstName" th:field="*{firstName}" class="form-control" required>
+      <div th:if="${#fields.hasErrors('firstName')}">
+        <div th:errors="*{firstName}" class="error text-danger"></div>
+      </div>
+    </div>
+
+    <!-- Last Name Field -->
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-control" required>
+      <div th:if="${#fields.hasErrors('lastName')}">
+        <div th:errors="*{lastName}" class="error text-danger"></div>
+      </div>
+    </div>
+
+    <!-- Specialty Field -->
+    <div class="form-group">
+      <label for="specialty">Specialty</label>
+      <input type="text" id="specialty" name="specialty" th:field="*{specialty}" class="form-control" required>
+      <div th:if="${#fields.hasErrors('specialty')}">
+        <div th:errors="*{specialty}" class="error text-danger"></div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary w-100">Save Doctor</button>
+  </form>
+  <a class="mt-2 mb-2" th:href="@{/doctors}">Back to doctor list</a>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

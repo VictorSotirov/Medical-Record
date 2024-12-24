@@ -26,16 +26,6 @@ public class DiagnosisServiceImpl implements DiagnosisService
         this.diagnosisRepository.save(diagnosis);
     }
 
-    //GET DIAGNOSIS BY ID
-    @Override
-    public DiagnosisResponseDTO getDiagnosisById(Long id)
-    {
-        Diagnosis diagnosis = this.diagnosisRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Diagnosis with id: " + id + " not found."));
-
-        return mapToResponseDTO(diagnosis);
-    }
-
     //UPDATE DIAGNOSIS
     @Override
     public void updateDiagnosis(Long id, DiagnosisRequestDTO updatedDiagnosis)
@@ -56,6 +46,16 @@ public class DiagnosisServiceImpl implements DiagnosisService
                 .orElseThrow(() -> new RuntimeException("Diagnosis with id: " + id + " not found."));
 
         this.diagnosisRepository.delete(diagnosis);
+    }
+
+    //GET DIAGNOSIS BY ID
+    @Override
+    public DiagnosisResponseDTO getDiagnosisById(Long id)
+    {
+        Diagnosis diagnosis = this.diagnosisRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Diagnosis with id: " + id + " not found."));
+
+        return mapToResponseDTO(diagnosis);
     }
 
     //GET ALL DIAGNOSES

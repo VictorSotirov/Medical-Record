@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@Controller
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/diagnoses")
@@ -24,7 +23,7 @@ public class DiagnosisController
     @GetMapping
     public String getDiagnoses(Model model)
     {
-        List<DiagnosisResponseDTO> diagnoses = diagnosisService.getAllDiagnoses();
+        List<DiagnosisResponseDTO> diagnoses = this.diagnosisService.getAllDiagnoses();
 
         model.addAttribute("diagnoses", diagnoses); // Add diagnoses to the model
 
@@ -86,6 +85,7 @@ public class DiagnosisController
         return "redirect:/diagnoses"; // Redirect to the diagnoses list
     }
 
+    //DELETE DIAGNOSIS
     @GetMapping("/delete/{id}")
     public String deleteDiagnosis(@PathVariable Long id)
     {
@@ -93,9 +93,5 @@ public class DiagnosisController
 
         return "redirect:/diagnoses";
     }
-
-
-
-
 
 }

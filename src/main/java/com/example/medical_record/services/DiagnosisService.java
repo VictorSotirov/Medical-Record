@@ -9,11 +9,11 @@ public interface DiagnosisService
 {
     void createDiagnosis(DiagnosisRequestDTO diagnosis);
 
-    DiagnosisResponseDTO getDiagnosisById(Long id);
-
     void updateDiagnosis(Long id, DiagnosisRequestDTO updatedDiagnosis);
 
     void deleteDiagnosis(Long id);
+
+    DiagnosisResponseDTO getDiagnosisById(Long id);
 
     List<DiagnosisResponseDTO> getAllDiagnoses();
 }
