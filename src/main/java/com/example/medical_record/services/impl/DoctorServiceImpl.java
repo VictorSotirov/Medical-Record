@@ -1,7 +1,7 @@
 package com.example.medical_record.services.impl;
 
-import com.example.medical_record.DTOs.DoctorRequestDTO;
-import com.example.medical_record.DTOs.DoctorResponseDTO;
+import com.example.medical_record.DTOs.doctor.DoctorRequestDTO;
+import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.data.DoctorRepository;
 import com.example.medical_record.data.entities.Doctor;
 import com.example.medical_record.services.DoctorService;
@@ -89,8 +89,6 @@ public class DoctorServiceImpl implements DoctorService
         dto.setLastName(doctor.getLastName());
 
         dto.setSpecialty(doctor.getSpecialty());
-
-        dto.setIsDeleted(doctor.isDeleted());
 
         return dto;
     }

@@ -1,4 +1,4 @@
-package com.example.medical_record.DTOs;
+package com.example.medical_record.DTOs.diagnosis;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

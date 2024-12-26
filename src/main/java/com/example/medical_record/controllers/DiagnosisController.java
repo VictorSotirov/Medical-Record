@@ -1,8 +1,7 @@
 package com.example.medical_record.controllers;
 
-import com.example.medical_record.DTOs.DiagnosisRequestDTO;
-import com.example.medical_record.DTOs.DiagnosisResponseDTO;
-import com.example.medical_record.data.entities.Diagnosis;
+import com.example.medical_record.DTOs.diagnosis.DiagnosisRequestDTO;
+import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
 import com.example.medical_record.services.DiagnosisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

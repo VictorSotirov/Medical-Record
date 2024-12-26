@@ -2,7 +2,6 @@ package com.example.medical_record.data.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,19 +19,18 @@ public class Patient
     private Long id;
 
     @NotBlank(message = "First name cannot be blank!")
-    @Size(max = 30, message = "First name has to be up to 20 characters!")
     @Column(name = "first_name", nullable = false, length = 20)
-    //@Pattern(regexp = "^[a-zA-Z]+$", message = "First name must contain only letters!")
     private String firstName;
 
     @NotBlank(message = "Last name cannot be blank!")
-    @Size(max = 30, message = "Last name has to be up to 20 characters!")
     @Column(name = "last_name", nullable = false, length = 20)
-    //@Pattern(regexp = "^[a-zA-Z]+$", message = "Last name must contain only letters!")
     private String lastName;
 
-    @Column(name = "is_health_insurance_paid", nullable = false)
-    private boolean isHealthInsurancePaid;
+    @Column(name = "is_health_insurance_paid", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean isHealthInsurancePaid = false;
+
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean isDeleted = false;
 
     @ManyToOne
     @JoinColumn(name = "personal_doctor_id")

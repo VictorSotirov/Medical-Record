@@ -1,10 +1,9 @@
 package com.example.medical_record.controllers;
 
-import com.example.medical_record.DTOs.DiagnosisRequestDTO;
-import com.example.medical_record.DTOs.DiagnosisResponseDTO;
-import com.example.medical_record.DTOs.DoctorRequestDTO;
-import com.example.medical_record.DTOs.DoctorResponseDTO;
+import com.example.medical_record.DTOs.doctor.DoctorRequestDTO;
+import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.services.DoctorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +48,7 @@ public class DoctorController
 
     //SEND DOCTOR FORM
     @PostMapping("/create")
-    public String createDoctor(@ModelAttribute("doctor") DoctorRequestDTO doctorToCreate, BindingResult result) throws RuntimeException
+    public String createDoctor(@ModelAttribute("doctor") @Valid DoctorRequestDTO doctorToCreate, BindingResult result) throws RuntimeException
     {
         if(result.hasErrors())
         {
@@ -74,7 +73,7 @@ public class DoctorController
 
     //SEND EDIT DOCTOR FORM
     @PostMapping("/edit/{id}")
-    public String editDoctor(@PathVariable Long id, @ModelAttribute("doctor") DoctorRequestDTO doctorToEdit, BindingResult result) throws RuntimeException
+    public String editDoctor(@PathVariable Long id, @ModelAttribute("doctor") @Valid DoctorRequestDTO doctorToEdit, BindingResult result) throws RuntimeException
     {
         if(result.hasErrors())
         {
@@ -83,7 +82,7 @@ public class DoctorController
 
         this.doctorService.updateDoctor(id, doctorToEdit);
 
-        return "redirect:/doctors"; // Redirect to the diagnoses list
+        return "redirect:/doctors";
     }
 
     //DELETE DOCTOR
@@ -94,5 +93,4 @@ public class DoctorController
 
         return "redirect:/doctors";
     }
-
 }

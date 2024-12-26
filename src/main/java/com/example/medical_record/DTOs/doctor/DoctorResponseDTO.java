@@ -1,4 +1,4 @@
-package com.example.medical_record.DTOs;
+package com.example.medical_record.DTOs.doctor;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,8 +14,6 @@ public class DoctorResponseDTO
     private String lastName;
 
     private String specialty;
-
-    private Boolean isDeleted;
 
     //TODO POTENIALLY ADD OTHER ENTITIES CONNECTED TO DOCTOR
 }

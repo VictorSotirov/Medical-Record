@@ -1,7 +1,7 @@
 package com.example.medical_record.services;
 
-import com.example.medical_record.DTOs.DiagnosisRequestDTO;
-import com.example.medical_record.DTOs.DiagnosisResponseDTO;
+import com.example.medical_record.DTOs.diagnosis.DiagnosisRequestDTO;
+import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
 
 import java.util.List;
 
