@@ -1,7 +1,5 @@
 package com.example.medical_record.controllers;
 
-import com.example.medical_record.DTOs.doctor.DoctorRequestDTO;
-import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientRequestDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
 import com.example.medical_record.services.DoctorService;

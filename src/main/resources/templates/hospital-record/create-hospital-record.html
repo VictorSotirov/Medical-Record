@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Create Hospital Record')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5" style="max-width: 600px">
+    <h2>Create New Hospital Record</h2>
+
+    <form th:action="@{/hospital-records/create}" th:object="${hospitalRecord}" method="post">
+        <!-- Admission Date -->
+        <div class="form-group">
+            <label for="admissionDate">Admission Date</label>
+            <input type="date" id="admissionDate" name="admissionDate" th:field="*{admissionDate}" class="form-control" required>
+            <div th:if="${#fields.hasErrors('admissionDate')}" th:errors="*{admissionDate}" class="text-danger"></div>
+        </div>
+
+        <!-- Discharge Date -->
+        <div class="form-group">
+            <label for="dischargeDate">Discharge Date</label>
+            <input type="date" id="dischargeDate" name="dischargeDate" th:field="*{dischargeDate}" class="form-control" required>
+            <div th:if="${#fields.hasErrors('dischargeDate')}" th:errors="*{dischargeDate}" class="text-danger"></div>
+        </div>
+
+        <!-- Select Patient -->
+        <div class="form-group">
+            <label for="patientId">Patient</label>
+            <select id="patientId" name="patientId" th:field="*{patientId}" class="form-control">
+                <option value="">-- Select Patient --</option>
+                <option th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.firstName + ' ' + patient.lastName}"></option>
+            </select>
+        </div>
+
+        <!-- Select Doctor -->
+        <div class="form-group">
+            <label for="doctorId">Doctor</label>
+            <select id="doctorId" name="doctorId" th:field="*{doctorId}" class="form-control">
+                <option value="">-- Select Doctor --</option>
+                <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.firstName + ' ' + doctor.lastName}"></option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">Create Record</button>
+    </form>
+
+    <a class="mt-3 d-block text-center" th:href="@{/hospital-records}">Back to Records List</a>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

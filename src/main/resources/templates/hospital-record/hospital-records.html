@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Hospital Records')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container">
+    <h1>Hospital Records Page</h1>
+
+    <!-- Success and error messages -->
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <!-- Button to create a new hospital record -->
+    <div class="btn-group" role="group" aria-label="Controller Buttons" style="display: flex; justify-content: space-between;">
+        <a href="/hospital-records/create" class="btn btn-primary mb-2" style="border: 1px solid #ffffff;"> Create New Record</a>
+    </div>
+
+    <!-- Table displaying all hospital records -->
+    <h2>All Hospital Records</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Admission Date</th>
+            <th>Discharge Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="record : ${hospitalRecords}">
+            <td th:text="${record.patient.firstName + ' ' + record.patient.lastName}">Patient Name</td>
+            <td th:text="${record.doctor.firstName + ' ' + record.doctor.lastName}">Doctor Name</td>
+            <td th:text="${record.admissionDate}">Admission Date</td>
+            <td th:text="${record.dischargeDate}">Discharge Date</td>
+            <td>
+                <!-- Actions to edit or delete hospital records -->
+                <a th:href="@{/hospital-records/edit/{id}(id=${record.id})}" title="Edit"><i class="fa fa-edit"></i></a>
+                <a th:href="@{/hospital-records/delete/{id}(id=${record.id})}" th:onclick="return confirm('Are you sure you want to delete this record?')" title="Delete"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

@@ -8,6 +8,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig
 {
+    //TODO IMPLEMENT SECURITY AFTER FINISHING ALL FUNCTIONALITIES
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
