@@ -95,7 +95,19 @@ public class PatientServiceImpl implements PatientService
     @Override
     public List<PatientResponseDTO> getAllPatientsWithSameDiagnosis(Long diagnosisId)
     {
-        List<Patient> patients = this.patientRepository.findDistinctByExaminationsDiagnosisId(diagnosisId);
+        List<Patient> patients = this.patientRepository.findDistinctByExaminationsDiagnosisIdAndIsDeletedFalse(diagnosisId);
+
+        return patients.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    //GET ALL PATIENTS WITH SAME DOCTOR
+    @Override
+    public List<PatientResponseDTO> getPatientsByDoctorId(Long doctorId)
+    {
+        List<Patient> patients = this.patientRepository.findByPersonalDoctorIdAndIsDeletedFalse(doctorId);
 
         return patients.stream()
                 .map(this::mapToResponseDTO)

@@ -1,5 +1,7 @@
 package com.example.medical_record.controllers;
 
+import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
+import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientRequestDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
 import com.example.medical_record.services.DiagnosisService;
@@ -31,7 +33,15 @@ public class PatientController
     {
         List<PatientResponseDTO> patients = this.patientService.getAllPatients();
 
+        List<DiagnosisResponseDTO> diagnoses = this.diagnosisService.getAllDiagnoses();
+
+        List<DoctorResponseDTO> doctors = this.doctorService.getAllDoctors();
+
         model.addAttribute("patients", patients);
+
+        model.addAttribute("diagnoses", diagnoses);
+
+        model.addAttribute("doctors", doctors);
 
         return "patient/patients";
     }
@@ -105,18 +115,42 @@ public class PatientController
     }
 
 
+    //GET ALL PATIENTS WITH SAME DIAGNOSIS
     @GetMapping("/filter-by-diagnosis")
-    public String filterPatientsByDiagnosis(@RequestParam(required = false) Long diagnosisId, Model model) {
-        List<PatientResponseDTO> patients;
+    public String filterPatientsByDiagnosis(@RequestParam(required = false) Long diagnosisId, Model model)
+    {
 
-        if (diagnosisId != null) {
-            patients = this.patientService.getAllPatientsWithSameDiagnosis(diagnosisId);
-        } else {
-            patients = patientService.getAllPatients();
-        }
+        List<PatientResponseDTO> patients = this.patientService.getAllPatientsWithSameDiagnosis(diagnosisId);
+
+        List<DiagnosisResponseDTO> diagnoses = this.diagnosisService.getAllDiagnoses();
 
         model.addAttribute("patients", patients);
-        model.addAttribute("diagnoses", this.diagnosisService.getAllDiagnoses());
+
+        model.addAttribute("diagnoses", diagnoses); // Ensure diagnoses are loaded after filtering
+
+        model.addAttribute("selectedDiagnosisId", diagnosisId); // To maintain selected filter in the dropdown
+
+        return "patient/patients";
+    }
+
+    //GET ALL PATIENTS WITH SAME DOCTOR
+    @GetMapping("/filter-by-doctor")
+    public String filterPatientsByDoctor(@RequestParam(required = false) Long doctorId, Model model)
+    {
+        List<PatientResponseDTO> patients = this.patientService.getPatientsByDoctorId(doctorId);
+
+        List<DiagnosisResponseDTO> diagnoses = this.diagnosisService.getAllDiagnoses();
+
+        List<DoctorResponseDTO> doctors = this.doctorService.getAllDoctors();
+
+        model.addAttribute("patients", patients);
+
+        model.addAttribute("diagnoses", diagnoses); // Keep diagnoses for other filter
+
+        model.addAttribute("doctors", doctors);
+
+        model.addAttribute("selectedDoctorId", doctorId); // Keep selected doctor in dropdown
+
         return "patient/patients";
     }
 }

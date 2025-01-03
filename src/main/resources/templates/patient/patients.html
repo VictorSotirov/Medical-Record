@@ -18,16 +18,32 @@
     </div>
 
     <!-- Dropdown to filter by diagnosis -->
-    <form th:action="@{/patients/filter-by-diagnosis}" method="get" class="mb-4">
+    <form th:action="@{/patients/filter-by-diagnosis}" method="get" class="mb-4 d-inline-block">
         <div class="form-group">
             <label for="diagnosisFilter">Filter by Diagnosis:</label>
-            <select id="diagnosisFilter" name="diagnosisId" class="form-control" style="max-width: 300px; display: inline-block;">
+            <select id="diagnosisFilter" name="diagnosisId" class="form-control d-inline-block" style="max-width: 300px;">
                 <option value="">-- Select Diagnosis --</option>
                 <option th:each="diagnosis : ${diagnoses}"
                         th:value="${diagnosis.id}"
                         th:text="${diagnosis.description}"></option>
             </select>
             <button type="submit" class="btn btn-secondary ml-2">Filter</button>
+            <a href="/patients" class="btn btn-light ml-2">Clear</a>
+        </div>
+    </form>
+
+    <!-- Dropdown to filter by doctor -->
+    <form th:action="@{/patients/filter-by-doctor}" method="get" class="mb-4 d-inline-block">
+        <div class="form-group">
+            <label for="doctorFilter">Filter by Doctor:</label>
+            <select id="doctorFilter" name="doctorId" class="form-control d-inline-block" style="max-width: 300px;">
+                <option value="">-- Select Doctor --</option>
+                <option th:each="doctor : ${doctors}"
+                        th:value="${doctor.id}"
+                        th:text="${doctor.firstName + ' ' + doctor.lastName}"></option>
+            </select>
+            <button type="submit" class="btn btn-secondary ml-2">Filter</button>
+            <a href="/patients" class="btn btn-light ml-2">Clear</a>
         </div>
     </form>
 

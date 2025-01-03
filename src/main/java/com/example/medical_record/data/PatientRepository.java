@@ -15,5 +15,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long>
     List<Patient> findByIsDeletedFalse();
 
     //FIND ALL PATIENT BY SPECIFIC DIAGNOSIS
-    List<Patient> findDistinctByExaminationsDiagnosisId(Long diagnosisId);
+    List<Patient> findDistinctByExaminationsDiagnosisIdAndIsDeletedFalse(Long diagnosisId);
+
+    //FIND ALL PATIENTS BY SPECIFIC DOCTOR
+    List<Patient> findByPersonalDoctorIdAndIsDeletedFalse(Long doctorId);
 }
