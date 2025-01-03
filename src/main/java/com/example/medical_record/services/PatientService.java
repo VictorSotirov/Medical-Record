@@ -15,4 +15,6 @@ public interface PatientService
     PatientResponseDTO getPatientById(Long id);
 
     List<PatientResponseDTO> getAllPatients();
+
+
 }

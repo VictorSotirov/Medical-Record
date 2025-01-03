@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Create Examination')">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5" style="max-width: 600px">
+  <h2>Create New Examination</h2>
+
+  <form th:action="@{/examinations/create}" th:object="${examination}" method="post">
+
+    <!-- Examination Date -->
+    <div class="form-group">
+      <label for="examinationDate">Examination Date</label>
+      <input type="date" id="examinationDate" name="examinationDate" th:field="*{examinationDate}" class="form-control" required>
+      <div th:if="${#fields.hasErrors('examinationDate')}" th:errors="*{examinationDate}" class="text-danger"></div>
+    </div>
+
+    <!-- Treatment Description -->
+    <div class="form-group">
+      <label for="treatmentDescription">Treatment Description</label>
+      <textarea id="treatmentDescription" name="treatmentDescription" th:field="*{treatmentDescription}" class="form-control" rows="3" required></textarea>
+      <div th:if="${#fields.hasErrors('treatmentDescription')}" th:errors="*{treatmentDescription}" class="text-danger"></div>
+    </div>
+
+    <!-- Sick Leave Days -->
+    <div class="form-group">
+      <label for="sickLeaveDays">Sick Leave Days</label>
+      <input type="number" id="sickLeaveDays" name="sickLeaveDays" th:field="*{sickLeaveDays}" class="form-control" required>
+      <div th:if="${#fields.hasErrors('sickLeaveDays')}" th:errors="*{sickLeaveDays}" class="text-danger"></div>
+    </div>
+
+    <!-- Sick Leave Start Date -->
+    <div class="form-group">
+      <label for="sickLeaveStartDate">Sick Leave Start Date</label>
+      <input type="date" id="sickLeaveStartDate" name="sickLeaveStartDate" th:field="*{sickLeaveStartDate}" class="form-control" required>
+      <div th:if="${#fields.hasErrors('sickLeaveStartDate')}" th:errors="*{sickLeaveStartDate}" class="text-danger"></div>
+    </div>
+
+    <!-- Select Patient -->
+    <div class="form-group">
+      <label for="patientId">Patient</label>
+      <select id="patientId" name="patientId" th:field="*{patientId}" class="form-control">
+        <option value="">-- Select Patient --</option>
+        <option th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.firstName + ' ' + patient.lastName}"></option>
+      </select>
+    </div>
+
+    <!-- Select Doctor -->
+    <div class="form-group">
+      <label for="doctorId">Doctor</label>
+      <select id="doctorId" name="doctorId" th:field="*{doctorId}" class="form-control">
+        <option value="">-- Select Doctor --</option>
+        <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.firstName + ' ' + doctor.lastName}"></option>
+      </select>
+    </div>
+
+    <!-- Select Diagnosis -->
+    <div class="form-group">
+      <label for="diagnosisId">Diagnosis</label>
+      <select id="diagnosisId" name="diagnosisId" th:field="*{diagnosisId}" class="form-control">
+        <option value="">-- Select Diagnosis --</option>
+        <option th:each="diagnosis : ${diagnoses}" th:value="${diagnosis.id}" th:text="${diagnosis.description}"></option>
+      </select>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary w-100">Create Examination</button>
+  </form>
+
+  <a class="mt-3 d-block text-center" th:href="@{/examinations}">Back to Examinations List</a>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

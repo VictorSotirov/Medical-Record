@@ -42,24 +42,25 @@ public class HospitalRecordServiceImpl implements HospitalRecordService
     @Override
     public void updateHospitalRecord(Long id, HospitalRecordEditDTO hospitalRecordToUpdate)
     {
-        HospitalRecord existingRecord = this.hospitalRecordRepository.findById(id)
+        HospitalRecord existingRecord = this.hospitalRecordRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new RuntimeException("Hospital record with id " + id + " not found."));
 
         existingRecord.setAdmissionDate(hospitalRecordToUpdate.getAdmissionDate());
 
         existingRecord.setDischargeDate(hospitalRecordToUpdate.getDischargeDate());
 
-        if (id != null)
-        {
-            Patient patient = this.patientRepository.findById(id)
+        //TODO REFACTOR
+        //if (id.get != null)
+        //{
+            Patient patient = this.patientRepository.findByIdAndIsDeletedFalse(id)
                     .orElseThrow(() -> new RuntimeException("Patient with id " + id + " not found."));
 
             existingRecord.setPatient(patient);
-        }
+        //}
 
         if (hospitalRecordToUpdate.getDoctorId() != null)
         {
-            Doctor doctor = this.doctorRepository.findById(hospitalRecordToUpdate.getDoctorId())
+            Doctor doctor = this.doctorRepository.findByIdAndIsDeletedFalse(hospitalRecordToUpdate.getDoctorId())
                     .orElseThrow(() -> new RuntimeException("Doctor with id " + hospitalRecordToUpdate.getDoctorId() + " not found."));
 
             existingRecord.setDoctor(doctor);
@@ -72,7 +73,7 @@ public class HospitalRecordServiceImpl implements HospitalRecordService
     @Override
     public void deleteHospitalRecord(Long id)
     {
-        HospitalRecord hospitalRecord = this.hospitalRecordRepository.findById(id)
+        HospitalRecord hospitalRecord = this.hospitalRecordRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new RuntimeException("Hospital record with id " + id + " not found."));
 
         hospitalRecord.setDeleted(true);
