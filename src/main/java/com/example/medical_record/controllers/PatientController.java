@@ -2,6 +2,7 @@ package com.example.medical_record.controllers;
 
 import com.example.medical_record.DTOs.patient.PatientRequestDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
+import com.example.medical_record.services.DiagnosisService;
 import com.example.medical_record.services.DoctorService;
 import com.example.medical_record.services.PatientService;
 import jakarta.validation.Valid;
@@ -21,6 +22,8 @@ public class PatientController
     private final DoctorService doctorService;
 
     private final PatientService patientService;
+
+    private final DiagnosisService diagnosisService;
 
     //GET ALL PATIENTS
     @GetMapping
@@ -99,5 +102,21 @@ public class PatientController
         this.patientService.deletePatient(id);
 
         return "redirect:/patients";
+    }
+
+
+    @GetMapping("/filter-by-diagnosis")
+    public String filterPatientsByDiagnosis(@RequestParam(required = false) Long diagnosisId, Model model) {
+        List<PatientResponseDTO> patients;
+
+        if (diagnosisId != null) {
+            patients = this.patientService.getAllPatientsWithSameDiagnosis(diagnosisId);
+        } else {
+            patients = patientService.getAllPatients();
+        }
+
+        model.addAttribute("patients", patients);
+        model.addAttribute("diagnoses", this.diagnosisService.getAllDiagnoses());
+        return "patient/patients";
     }
 }

@@ -16,5 +16,5 @@ public interface PatientService
 
     List<PatientResponseDTO> getAllPatients();
 
-
+    List<PatientResponseDTO> getAllPatientsWithSameDiagnosis(Long diagnosisId);
 }

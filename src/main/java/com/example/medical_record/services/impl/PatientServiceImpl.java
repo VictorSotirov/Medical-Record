@@ -91,6 +91,19 @@ public class PatientServiceImpl implements PatientService
                 .collect(Collectors.toList());
     }
 
+    //GET ALL PATIENTS WITH SPECIFIC ID
+    @Override
+    public List<PatientResponseDTO> getAllPatientsWithSameDiagnosis(Long diagnosisId)
+    {
+        List<Patient> patients = this.patientRepository.findDistinctByExaminationsDiagnosisId(diagnosisId);
+
+        return patients.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+
+
     // Helper method to map entity to DTO
     public PatientResponseDTO mapToResponseDTO(Patient patient)
     {
