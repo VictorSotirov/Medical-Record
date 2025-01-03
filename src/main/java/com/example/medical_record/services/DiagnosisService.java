@@ -15,4 +15,6 @@ public interface DiagnosisService
     DiagnosisResponseDTO getDiagnosisById(Long id);
 
     List<DiagnosisResponseDTO> getAllDiagnoses();
+
+    List<DiagnosisFrequencyDTO> getMostCommonDiagnoses();
 }

@@ -8,13 +8,17 @@
 <div class="container">
     <h1>Diagnoses Page</h1>
 
+    <!-- Success and error messages -->
     <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
     <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
-    <div class="btn-group" role="group" aria-label="Controller Buttons" style="display: flex; justify-content: space-between;">
-        <a href="/diagnoses/create" class="btn btn-primary mb-2" style="border: 1px solid #ffffff;"> Create New Diagnosis</a>
+    <!-- Buttons for actions -->
+    <div class="btn-group mb-3" role="group" style="display: flex; justify-content: space-between;">
+        <a href="/diagnoses/create" class="btn btn-primary" style="border: 1px solid #ffffff;">Create New Diagnosis</a>
+        <a href="/diagnoses/most-common" class="btn btn-secondary" style="border: 1px solid #ffffff;">View Most Common Diagnoses</a>
     </div>
 
+    <!-- Table for all diagnoses -->
     <h2>All Diagnoses</h2>
     <table class="table">
         <thead>

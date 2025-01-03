@@ -1,5 +1,6 @@
 package com.example.medical_record.controllers;
 
+import com.example.medical_record.DTOs.diagnosis.DiagnosisFrequencyDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisRequestDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
 import com.example.medical_record.services.DiagnosisService;
@@ -91,6 +92,17 @@ public class DiagnosisController
         this.diagnosisService.deleteDiagnosis(id);
 
         return "redirect:/diagnoses";
+    }
+
+    //GET MOST COMMON DIAGNOSES
+    @GetMapping("/most-common")
+    public String getMostCommonDiagnoses(Model model)
+    {
+        List<DiagnosisFrequencyDTO> mostCommonDiagnoses = diagnosisService.getMostCommonDiagnoses();
+
+        model.addAttribute("mostCommonDiagnoses", mostCommonDiagnoses);
+
+        return "diagnosis/most-common-diagnoses";
     }
 
 }

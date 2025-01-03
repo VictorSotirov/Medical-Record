@@ -6,9 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DiagnosisResponseDTO
+@AllArgsConstructor
+public class DiagnosisFrequencyDTO
 {
-    private Long id;
+    private DiagnosisResponseDTO diagnosis;
 
-    private String description;
+    private Long frequency;
 }

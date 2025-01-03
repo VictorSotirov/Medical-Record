@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Most Common Diagnoses')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5">
+    <h1>Most Common Diagnoses</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Diagnosis and Description</th>
+            <th>Frequency</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="diagnosis : ${mostCommonDiagnoses}">
+            <td th:text="${diagnosis.diagnosis.description}">Diagnosis Name</td>
+            <td th:text="${diagnosis.frequency}">Frequency</td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/diagnoses}" class="btn btn-primary mt-3">Back to Diagnoses</a>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

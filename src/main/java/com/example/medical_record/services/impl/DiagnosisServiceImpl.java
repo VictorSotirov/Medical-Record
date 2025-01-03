@@ -1,5 +1,6 @@
 package com.example.medical_record.services.impl;
 
+import com.example.medical_record.DTOs.diagnosis.DiagnosisFrequencyDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisRequestDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
 import com.example.medical_record.data.DiagnosisRepository;
@@ -67,6 +68,21 @@ public class DiagnosisServiceImpl implements DiagnosisService
                 .collect(Collectors.toList());
     }
 
+    //GET MOST COMMON DIAGNOSES
+    @Override
+    public List<DiagnosisFrequencyDTO> getMostCommonDiagnoses()
+    {
+        List<Object[]> results = diagnosisRepository.findMostCommonDiagnoses();
+        return results.stream()
+                .map(result ->
+                {
+                    Diagnosis diagnosis = (Diagnosis) result[0];
+                    Long frequency = (Long) result[1];
+                    DiagnosisResponseDTO diagnosisDTO = mapToResponseDTO(diagnosis);
+                    return new DiagnosisFrequencyDTO(diagnosisDTO, frequency);
+                })
+                .collect(Collectors.toList());
+    }
 
 
     // Helper method to map entity to DTO
