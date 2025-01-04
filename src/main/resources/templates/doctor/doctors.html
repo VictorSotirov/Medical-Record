@@ -12,9 +12,11 @@
     <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
     <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
-    <!-- Button to create a new doctor -->
-    <div class="btn-group" role="group" aria-label="Controller Buttons" style="display: flex; justify-content: space-between;">
-        <a href="/doctors/create" class="btn btn-primary mb-2" style="border: 1px solid #ffffff;"> Create New Doctor</a>
+    <!-- Buttons for actions -->
+    <div class="btn-group mb-3" role="group" aria-label="Controller Buttons" style="display: flex; justify-content: space-between;">
+        <a href="/doctors/create" class="btn btn-primary" style="border: 1px solid #ffffff;">Create New Doctor</a>
+        <a href="/doctors/with-patients" class="btn btn-secondary" style="border: 1px solid #ffffff;">View Doctors With Patients</a>
+        <a href="/doctors/examination-counts" class="btn btn-info" style="border: 1px solid #ffffff;">View Examination Counts For Each Doctor</a>
     </div>
 
     <!-- Table displaying all doctors -->

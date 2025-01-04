@@ -12,9 +12,10 @@
     <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
     <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
-    <!-- Button to create a new patient -->
+    <!-- Buttons for actions -->
     <div class="btn-group mb-3" role="group" style="display: flex; justify-content: space-between;">
         <a href="/patients/create" class="btn btn-primary" style="border: 1px solid #ffffff;">Create New Patient</a>
+        <a href="/patients/with-examinations" class="btn btn-info" style="border: 1px solid #ffffff;">View Patients with Examinations</a>
     </div>
 
     <!-- Dropdown to filter by diagnosis -->

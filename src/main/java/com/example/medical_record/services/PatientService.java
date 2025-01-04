@@ -19,4 +19,7 @@ public interface PatientService
     List<PatientResponseDTO> getAllPatientsWithSameDiagnosis(Long diagnosisId);
 
     List<PatientResponseDTO> getPatientsByDoctorId(Long doctorId);
+
+    //GET ALL PATIENTS AND THEIR EXAMINATIONS
+    List<PatientsWithExaminationsDTO> getAllPatientsWithExaminations();
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Patients with Examinations')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5">
+    <h1>Patients with Examinations</h1>
+
+    <div th:each="patientWithExaminations : ${patientsWithExaminations}" class="mb-4">
+        <h3 th:text="${patientWithExaminations.patient.firstName + ' ' + patientWithExaminations.patient.lastName}"></h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Examination Date</th>
+                <th>Treatment Description</th>
+                <th>Sick Leave Days</th>
+                <th>Sick Leave Start Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="examination : ${patientWithExaminations.examinations}">
+                <td th:text="${examination.examinationDate}">Examination Date</td>
+                <td th:text="${examination.treatmentDescription}">Treatment Description</td>
+                <td th:text="${examination.sickLeaveDays}">Sick Leave Days</td>
+                <td th:text="${examination.sickLeaveStartDate}">Sick Leave Start Date</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

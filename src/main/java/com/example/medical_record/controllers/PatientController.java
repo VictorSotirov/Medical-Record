@@ -4,6 +4,7 @@ import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
 import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientRequestDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
+import com.example.medical_record.DTOs.patient.PatientsWithExaminationsDTO;
 import com.example.medical_record.services.DiagnosisService;
 import com.example.medical_record.services.DoctorService;
 import com.example.medical_record.services.PatientService;
@@ -152,5 +153,15 @@ public class PatientController
         model.addAttribute("selectedDoctorId", doctorId); // Keep selected doctor in dropdown
 
         return "patient/patients";
+    }
+
+    @GetMapping("/with-examinations")
+    public String getPatientsWithExaminations(Model model)
+    {
+        List<PatientsWithExaminationsDTO> patientsWithExaminations = patientService.getAllPatientsWithExaminations();
+
+        model.addAttribute("patientsWithExaminations", patientsWithExaminations);
+
+        return "patient/patients-with-examinations";
     }
 }

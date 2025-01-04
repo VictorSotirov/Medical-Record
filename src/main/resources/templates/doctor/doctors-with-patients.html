@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Doctors with Patients')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5">
+    <h1>Patients assigned to each doctor</h1>
+
+    <div th:each="doctorWithPatients : ${doctorsWithPatients}" class="mb-4">
+        <h3 th:text="${doctorWithPatients.doctor.firstName + ' ' + doctorWithPatients.doctor.lastName + ' (' + doctorWithPatients.doctor.specialty + ')'}"></h3>
+        <div class="patients-list mt-3">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Patient First Name</th>
+                    <th>Patient Last Name</th>
+                    <th>Health Insurance Paid</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="patient : ${doctorWithPatients.patients}">
+                    <td th:text="${patient.firstName}">Patient First Name</td>
+                    <td th:text="${patient.lastName}">Patient Last Name</td>
+                    <td th:text="${patient.healthInsurancePaid ? 'Yes' : 'No'}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(doctorWithPatients.patients)}">
+                    <td colspan="3" class="text-center">No patients assigned</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

@@ -16,5 +16,5 @@ public interface DoctorService
 
     List<DoctorResponseDTO> getAllDoctors();
 
-
+    List<DoctorWithPatientsDTO> getAllDoctorsWithPatients();
 }

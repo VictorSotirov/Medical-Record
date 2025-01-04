@@ -1,6 +1,7 @@
 package com.example.medical_record.services.impl;
 
 import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
+import com.example.medical_record.DTOs.doctor.DoctorExaminationCountDTO;
 import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.examination.ExaminationEditDTO;
 import com.example.medical_record.DTOs.examination.ExaminationRequestDTO;
@@ -110,6 +111,13 @@ public class ExaminationServiceImpl implements ExaminationService
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<DoctorExaminationCountDTO> getExaminationCountsByDoctor()
+    {
+        return this.examinationRepository.getExaminationCountsByDoctor();
+    }
+
 
     // Helper method to map entity to DTO
     private ExaminationResponseDTO mapToResponseDTO(Examination examination)

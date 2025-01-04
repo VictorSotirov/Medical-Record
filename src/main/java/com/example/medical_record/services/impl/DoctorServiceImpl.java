@@ -2,8 +2,11 @@ package com.example.medical_record.services.impl;
 
 import com.example.medical_record.DTOs.doctor.DoctorRequestDTO;
 import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
+import com.example.medical_record.DTOs.doctor.DoctorWithPatientsDTO;
+import com.example.medical_record.DTOs.patient.PatientResponseDTO;
 import com.example.medical_record.data.DoctorRepository;
 import com.example.medical_record.data.entities.Doctor;
+import com.example.medical_record.data.entities.Patient;
 import com.example.medical_record.services.DoctorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -76,6 +79,20 @@ public class DoctorServiceImpl implements DoctorService
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<DoctorWithPatientsDTO> getAllDoctorsWithPatients()
+    {
+        return doctorRepository.findByIsDeletedFalse().stream()
+                .map(doctor -> new DoctorWithPatientsDTO(
+                        mapToResponseDTO(doctor),
+                        doctor.getRegisteredPatients().stream()
+                                .filter(patient -> !patient.isDeleted())
+                                .map(this::mapPatientToResponseDTO)
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
+    }
+
 
     // Helper method to map entity to DTO
     private DoctorResponseDTO mapToResponseDTO(Doctor doctor)
@@ -105,5 +122,20 @@ public class DoctorServiceImpl implements DoctorService
         doctor.setSpecialty(dto.getSpecialty());
 
         return doctor;
+    }
+
+    //Helper method to map patient entity to DTO
+    private PatientResponseDTO mapPatientToResponseDTO(Patient patient)
+    {
+        PatientResponseDTO dto = new PatientResponseDTO();
+
+        dto.setId(patient.getId());
+
+        dto.setFirstName(patient.getFirstName());
+
+        dto.setLastName(patient.getLastName());
+
+        dto.setHealthInsurancePaid(patient.isHealthInsurancePaid());
+        return dto;
     }
 }

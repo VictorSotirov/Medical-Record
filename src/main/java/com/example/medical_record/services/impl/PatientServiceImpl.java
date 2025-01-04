@@ -1,11 +1,14 @@
 package com.example.medical_record.services.impl;
 
 import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
+import com.example.medical_record.DTOs.examination.ExaminationResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientRequestDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
+import com.example.medical_record.DTOs.patient.PatientsWithExaminationsDTO;
 import com.example.medical_record.data.DoctorRepository;
 import com.example.medical_record.data.PatientRepository;
 import com.example.medical_record.data.entities.Doctor;
+import com.example.medical_record.data.entities.Examination;
 import com.example.medical_record.data.entities.Patient;
 import com.example.medical_record.services.PatientService;
 import lombok.AllArgsConstructor;
@@ -112,6 +115,39 @@ public class PatientServiceImpl implements PatientService
         return patients.stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatientsWithExaminationsDTO> getAllPatientsWithExaminations()
+    {
+        return this.patientRepository.findByIsDeletedFalse().stream()
+                .map(patient -> {
+                    List<ExaminationResponseDTO> examinationDTOs = patient.getExaminations().stream()
+                            .filter(exam -> !exam.isDeleted()) // Exclude deleted examinations
+                            .map(this::mapToExaminationResponseDTO)
+                            .collect(Collectors.toList());
+
+                    return new PatientsWithExaminationsDTO(mapToResponseDTO(patient), examinationDTOs);
+                })
+                .collect(Collectors.toList());
+    }
+
+    //Helper method for mapping examination to dto
+    private ExaminationResponseDTO mapToExaminationResponseDTO(Examination examination)
+    {
+        ExaminationResponseDTO dto = new ExaminationResponseDTO();
+
+        dto.setId(examination.getId());
+
+        dto.setExaminationDate(examination.getExaminationDate());
+
+        dto.setTreatmentDescription(examination.getTreatmentDescription());
+
+        dto.setSickLeaveDays(examination.getSickLeaveDays());
+
+        dto.setSickLeaveStartDate(examination.getSickLeaveStartDate());
+
+        return dto;
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.medical_record.services;
 
+import com.example.medical_record.DTOs.doctor.DoctorExaminationCountDTO;
 import com.example.medical_record.DTOs.examination.ExaminationEditDTO;
 import com.example.medical_record.DTOs.examination.ExaminationRequestDTO;
 import com.example.medical_record.DTOs.examination.ExaminationResponseDTO;
@@ -17,4 +18,6 @@ public interface ExaminationService
     ExaminationResponseDTO getExaminationById(Long id);
 
     List<ExaminationResponseDTO> getAllExaminations();
+
+    List<DoctorExaminationCountDTO> getExaminationCountsByDoctor();
 }
