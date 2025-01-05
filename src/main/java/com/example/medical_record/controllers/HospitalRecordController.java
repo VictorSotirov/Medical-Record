@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -111,5 +112,21 @@ public class HospitalRecordController
         this.hospitalRecordService.deleteHospitalRecord(id);
 
         return "redirect:/hospital-records";
+    }
+
+    //ADD CHECKS FOR THE END DATE NOT BEING BEFORE THE START DATE
+    @GetMapping("/filter-by-date")
+    public String filterHospitalRecordsByDate(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, Model model)
+    {
+        List<HospitalRecordResponseDTO> records = hospitalRecordService.getHospitalRecordsByDateRange(
+                LocalDate.parse(startDate), LocalDate.parse(endDate));
+
+        model.addAttribute("hospitalRecords", records);
+
+        model.addAttribute("startDate", startDate);
+
+        model.addAttribute("endDate", endDate);
+
+        return "hospital-record/filter-hospital-records-by-timeframe";
     }
 }

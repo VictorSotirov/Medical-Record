@@ -3,6 +3,7 @@ package com.example.medical_record.services;
 
 import com.example.medical_record.DTOs.hospitalRecord.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface HospitalRecordService
@@ -16,4 +17,7 @@ public interface HospitalRecordService
     HospitalRecordResponseDTO getHospitalRecordById(Long id);
 
     List<HospitalRecordResponseDTO> getAllHospitalRecords();
+
+    //GET ALL HOSPITAL RECORDS IN A CERTAIN TIMEFRAME
+    List<HospitalRecordResponseDTO> getHospitalRecordsByDateRange(LocalDate startDate, LocalDate endDate);
 }

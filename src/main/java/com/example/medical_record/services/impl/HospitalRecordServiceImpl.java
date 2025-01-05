@@ -16,6 +16,7 @@ import com.example.medical_record.services.HospitalRecordService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,6 +103,15 @@ public class HospitalRecordServiceImpl implements HospitalRecordService
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<HospitalRecordResponseDTO> getHospitalRecordsByDateRange(LocalDate startDate, LocalDate endDate)
+    {
+        List<HospitalRecord> recordsInTimePeriod = this.hospitalRecordRepository.findByAdmissionDateBetweenAndIsDeletedFalse(startDate, endDate);
+
+        return recordsInTimePeriod.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
 
 
     // Helper method to map entity to DTO
