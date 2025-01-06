@@ -12,7 +12,7 @@
     <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
     <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
-    <!-- Date Filter Form -->
+    <!-- Filter by Date Form -->
     <form th:action="@{/hospital-records/filter-by-date}" method="get" class="mb-4">
         <div class="form-row">
             <div class="col">
@@ -24,14 +24,16 @@
                 <input type="date" id="endDate" name="endDate" th:value="${endDate}" class="form-control">
             </div>
             <div class="col align-self-end">
-                <button type="submit" class="btn btn-secondary mt-2">Filter</button>
+                <button type="submit" class="btn btn-secondary mt-2">Filter by Date</button>
             </div>
         </div>
     </form>
 
-    <!-- Button to create a new hospital record -->
-    <div class="btn-group" role="group" aria-label="Controller Buttons" style="display: flex; justify-content: space-between;">
-        <a href="/hospital-records/create" class="btn btn-primary mb-2" style="border: 1px solid #ffffff;"> Create New Record</a>
+    <!-- Buttons Group -->
+    <div class="btn-group mb-3" role="group" aria-label="Controller Buttons" style="display: flex; justify-content: space-between;">
+        <a href="/hospital-records/create" class="btn btn-primary" style="border: 1px solid #ffffff;">Create New Record</a>
+        <a href="/hospital-records/most-records-month" class="btn btn-info" style="border: 1px solid #ffffff;">View Month with Most Records</a>
+        <a href="/hospital-records/doctor-with-most-records" class="btn btn-warning" style="border: 1px solid #ffffff;">View Doctor with Most Records</a>
     </div>
 
     <!-- Table displaying all hospital records -->
@@ -53,7 +55,6 @@
             <td th:text="${record.admissionDate}">Admission Date</td>
             <td th:text="${record.dischargeDate}">Discharge Date</td>
             <td>
-                <!-- Actions to edit or delete hospital records -->
                 <a th:href="@{/hospital-records/edit/{id}(id=${record.id})}" title="Edit"><i class="fa fa-edit"></i></a>
                 <a th:href="@{/hospital-records/delete/{id}(id=${record.id})}" th:onclick="return confirm('Are you sure you want to delete this record?')" title="Delete"><i class="fa fa-trash"></i></a>
             </td>

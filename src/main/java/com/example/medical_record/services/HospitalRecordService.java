@@ -1,7 +1,9 @@
 package com.example.medical_record.services;
 
 
+import com.example.medical_record.DTOs.doctor.DoctorWithMostRecordsDTO;
 import com.example.medical_record.DTOs.hospitalRecord.*;
+import com.example.medical_record.services.impl.MonthWithHospitalRecordsDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,4 +22,8 @@ public interface HospitalRecordService
 
     //GET ALL HOSPITAL RECORDS IN A CERTAIN TIMEFRAME
     List<HospitalRecordResponseDTO> getHospitalRecordsByDateRange(LocalDate startDate, LocalDate endDate);
+
+    MonthWithHospitalRecordsDTO getMonthWithMostHospitalRecords();
+
+    DoctorWithMostRecordsDTO getDoctorWithMostRecords();
 }

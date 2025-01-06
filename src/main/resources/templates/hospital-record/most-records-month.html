@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Hospital Records')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container">
+    <h1>Month with Most Hospital Records</h1>
+
+    <div class="alert alert-info">
+        <strong>Month:</strong> <span th:text="${mostRecordsMonth}"></span>
+        <br>
+        <strong>Total Records:</strong> <span th:text="${recordCount}"></span>
+    </div>
+
+    <h2>Records for <span th:text="${mostRecordsMonth}"></span></h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Admission Date</th>
+            <th>Discharge Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="record : ${hospitalRecords}">
+            <td th:text="${record.patient.firstName + ' ' + record.patient.lastName}">Patient Name</td>
+            <td th:text="${record.doctor.firstName + ' ' + record.doctor.lastName}">Doctor Name</td>
+            <td th:text="${record.admissionDate}">Admission Date</td>
+            <td th:text="${record.dischargeDate}">Discharge Date</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/hospital-records" class="btn btn-primary">Back to All Records</a>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

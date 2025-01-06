@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Doctor with Most Records')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container">
+    <h1>Doctor with Most Records</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${doctorWithMostRecords.firstName + ' ' + doctorWithMostRecords.lastName}">Doctor Name</h5>
+            <p class="card-text">
+                Specialty: <span th:text="${doctorWithMostRecords.specialty}">Specialty</span><br>
+                Hospital Records Count: <span th:text="${doctorWithMostRecords.recordCount}">Record Count</span>
+            </p>
+        </div>
+    </div>
+    <a href="/hospital-records" class="btn btn-primary mt-3">Back to Hospital Records</a>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

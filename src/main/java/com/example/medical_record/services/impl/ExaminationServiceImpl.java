@@ -6,19 +6,18 @@ import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.examination.ExaminationEditDTO;
 import com.example.medical_record.DTOs.examination.ExaminationRequestDTO;
 import com.example.medical_record.DTOs.examination.ExaminationResponseDTO;
+import com.example.medical_record.DTOs.hospitalRecord.HospitalRecordResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
 import com.example.medical_record.data.DiagnosisRepository;
 import com.example.medical_record.data.DoctorRepository;
 import com.example.medical_record.data.ExaminationRepository;
 import com.example.medical_record.data.PatientRepository;
-import com.example.medical_record.data.entities.Diagnosis;
-import com.example.medical_record.data.entities.Doctor;
-import com.example.medical_record.data.entities.Examination;
-import com.example.medical_record.data.entities.Patient;
+import com.example.medical_record.data.entities.*;
 import com.example.medical_record.services.ExaminationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -116,6 +115,16 @@ public class ExaminationServiceImpl implements ExaminationService
     public List<DoctorExaminationCountDTO> getExaminationCountsByDoctor()
     {
         return this.examinationRepository.getExaminationCountsByDoctor();
+    }
+
+    @Override
+    public List<ExaminationResponseDTO> getExaminationsByDoctorAndDate(Long doctorId, LocalDate startDate, LocalDate  endDate)
+    {
+        List<Examination> examinations = this.examinationRepository.findByDoctorIdAndExaminationDateBetweenAndIsDeletedFalse(doctorId, startDate, endDate);
+
+        return examinations.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
 
 

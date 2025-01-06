@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:insert="fragments/header-files.html :: header-files('Examinations')">
+<head th:insert="fragments/header-files.html :: header-files('Filtered Examinations')">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <header th:insert="fragments/header.html :: header"></header>
 <div class="container">
-    <h1>Examinations Page</h1>
+    <h1>Filtered Examinations</h1>
 
     <!-- Success and error messages -->
     <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
@@ -27,22 +27,22 @@
                 <label for="doctorFilter">Select Doctor:</label>
                 <select id="doctorFilter" name="doctorId" class="form-control">
                     <option value="">-- Select Doctor --</option>
-                    <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.firstName + ' ' + doctor.lastName}"></option>
+                    <option th:each="doctor : ${doctors}"
+                            th:value="${doctor.id}"
+                            th:selected="${doctor.id == doctorId}"
+                            th:text="${doctor.firstName + ' ' + doctor.lastName}">
+                    </option>
                 </select>
             </div>
             <div class="col align-self-end">
-                <button type="submit" class="btn btn-secondary mt-2">Filter by Doctor and Date</button>
+                <button type="submit" class="btn btn-secondary mt-2">Filter</button>
+                <a href="/examinations" class="btn btn-light mt-2 ml-2">Clear Filters</a>
             </div>
         </div>
     </form>
 
-    <!-- Button to create a new examination -->
-    <div class="btn-group mb-3" role="group" aria-label="Controller Buttons" style="display: flex; justify-content: space-between;">
-        <a href="/examinations/create" class="btn btn-primary" style="border: 1px solid #ffffff;">Create New Examination</a>
-    </div>
-
-    <!-- Table displaying all examinations -->
-    <h2>All Examinations</h2>
+    <!-- Table displaying filtered examinations -->
+    <h2>Examinations for Selected Criteria</h2>
     <table class="table">
         <thead>
         <tr>

@@ -2,6 +2,7 @@ package com.example.medical_record.services.impl;
 
 
 import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
+import com.example.medical_record.DTOs.doctor.DoctorWithMostRecordsDTO;
 import com.example.medical_record.DTOs.hospitalRecord.HospitalRecordEditDTO;
 import com.example.medical_record.DTOs.hospitalRecord.HospitalRecordRequestDTO;
 import com.example.medical_record.DTOs.hospitalRecord.HospitalRecordResponseDTO;
@@ -112,6 +113,57 @@ public class HospitalRecordServiceImpl implements HospitalRecordService
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public MonthWithHospitalRecordsDTO getMonthWithMostHospitalRecords()
+    {
+        List<Object[]> result = this.hospitalRecordRepository.findMonthWithMostHospitalRecords();
+
+        if (result.isEmpty())
+        {
+            throw new RuntimeException("No hospital records found for the current year.");
+        }
+
+        Object[] mostRecordsData = result.get(0);
+
+        int month = (int) mostRecordsData[0];
+
+        long count = (long) mostRecordsData[1];
+
+        List<HospitalRecord> records = hospitalRecordRepository.findRecordsByMonth(month);
+
+        List<HospitalRecordResponseDTO> recordDTOs = records.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+
+        return new MonthWithHospitalRecordsDTO(month, count, recordDTOs);
+    }
+
+    @Override
+    public DoctorWithMostRecordsDTO getDoctorWithMostRecords()
+    {
+        List<Object[]> results = hospitalRecordRepository.findDoctorWithMostRecords();
+
+        if (results.isEmpty()) {
+            throw new RuntimeException("No doctor records found.");
+        }
+
+        // Get the first result
+        Object[] result = results.get(0);
+
+        Long doctorId = ((Number) result[0]).longValue(); // Cast to Number first, then to Long
+
+        String firstName = (String) result[1];
+
+        String lastName = (String) result[2];
+
+        String specialty = (String) result[3];
+
+        Long recordCount = ((Number) result[4]).longValue(); // Cast to Number first, then to Long
+
+        return new DoctorWithMostRecordsDTO(doctorId, firstName, lastName, specialty, recordCount);
+    }
+
 
 
     // Helper method to map entity to DTO

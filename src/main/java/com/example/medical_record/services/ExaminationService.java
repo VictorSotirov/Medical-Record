@@ -5,6 +5,7 @@ import com.example.medical_record.DTOs.examination.ExaminationEditDTO;
 import com.example.medical_record.DTOs.examination.ExaminationRequestDTO;
 import com.example.medical_record.DTOs.examination.ExaminationResponseDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ExaminationService
@@ -20,4 +21,6 @@ public interface ExaminationService
     List<ExaminationResponseDTO> getAllExaminations();
 
     List<DoctorExaminationCountDTO> getExaminationCountsByDoctor();
+
+    List<ExaminationResponseDTO> getExaminationsByDoctorAndDate(Long doctorId, LocalDate startDate, LocalDate  endDate);
 }

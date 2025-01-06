@@ -1,5 +1,6 @@
 package com.example.medical_record.controllers;
 
+import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.examination.ExaminationEditDTO;
 import com.example.medical_record.DTOs.examination.ExaminationRequestDTO;
 import com.example.medical_record.DTOs.examination.ExaminationResponseDTO;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -35,7 +37,11 @@ public class ExaminationController
     {
         List<ExaminationResponseDTO> examinations = this.examinationService.getAllExaminations();
 
+        List<DoctorResponseDTO> doctors = this.doctorService.getAllDoctors();
+
         model.addAttribute("examinations", examinations);
+
+        model.addAttribute("doctors", doctors);
 
         return "examination/examinations";
     }
@@ -116,6 +122,25 @@ public class ExaminationController
     {
         this.examinationService.deleteExamination(id);
         return "redirect:/examinations";
+    }
+
+    @GetMapping("/filter-by-doctor-and-date")
+    public String filterExaminationsByDoctorAndDate(@RequestParam("doctorId") Long doctorId,
+                                                    @RequestParam("startDate") String startDate,
+                                                    @RequestParam("endDate") String endDate, Model model)
+    {
+        List<ExaminationResponseDTO> examinations = examinationService.getExaminationsByDoctorAndDate(
+                doctorId, LocalDate.parse(startDate), LocalDate.parse(endDate));
+
+        List<DoctorResponseDTO> doctors = doctorService.getAllDoctors();
+
+        model.addAttribute("examinations", examinations);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("doctorId", doctorId);
+        model.addAttribute("doctors", doctors);
+
+        return "examination/filter-examinations-by-doctor-and-date";
     }
 
 

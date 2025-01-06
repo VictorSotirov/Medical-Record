@@ -1,20 +1,23 @@
 package com.example.medical_record.controllers;
 
+import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
+import com.example.medical_record.DTOs.doctor.DoctorWithMostRecordsDTO;
 import com.example.medical_record.DTOs.hospitalRecord.HospitalRecordEditDTO;
 import com.example.medical_record.DTOs.hospitalRecord.HospitalRecordRequestDTO;
 import com.example.medical_record.DTOs.hospitalRecord.HospitalRecordResponseDTO;
 import com.example.medical_record.services.DoctorService;
 import com.example.medical_record.services.HospitalRecordService;
 import com.example.medical_record.services.PatientService;
+import com.example.medical_record.services.impl.MonthWithHospitalRecordsDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 @Controller
@@ -32,7 +35,7 @@ public class HospitalRecordController
     @GetMapping
     public String getHospitalRecords(Model model)
     {
-        List<HospitalRecordResponseDTO> hospitalRecords = this.hospitalRecordService.getAllHospitalRecords();
+        List<HospitalRecordResponseDTO> hospitalRecords = hospitalRecordService.getAllHospitalRecords();
 
         model.addAttribute("hospitalRecords", hospitalRecords);
 
@@ -129,4 +132,27 @@ public class HospitalRecordController
 
         return "hospital-record/filter-hospital-records-by-timeframe";
     }
+
+    @GetMapping("/most-records-month")
+    public String getMonthWithMostHospitalRecords(Model model)
+    {
+        MonthWithHospitalRecordsDTO mostRecords = this.hospitalRecordService.getMonthWithMostHospitalRecords();
+
+        model.addAttribute("mostRecordsMonth", Month.of(mostRecords.getMonth()).name());
+        model.addAttribute("recordCount", mostRecords.getRecordCount());
+        model.addAttribute("hospitalRecords", mostRecords.getRecords());
+
+        return "hospital-record/most-records-month";
+    }
+
+    @GetMapping("/doctor-with-most-records")
+    public String getDoctorWithMostRecords(Model model)
+    {
+        DoctorWithMostRecordsDTO doctorWithMostRecords = hospitalRecordService.getDoctorWithMostRecords();
+
+        model.addAttribute("doctorWithMostRecords", doctorWithMostRecords);
+
+        return "hospital-record/doctor-with-most-records";
+    }
+
 }
