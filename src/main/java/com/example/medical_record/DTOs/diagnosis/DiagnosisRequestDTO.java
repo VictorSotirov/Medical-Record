@@ -1,7 +1,6 @@
 package com.example.medical_record.DTOs.diagnosis;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class DiagnosisRequestDTO
 {
-    @NotBlank(message = "Description cannot be blank")
+    @NotBlank(message = "Description cannot be blank!")
     private String description;
 }

@@ -7,18 +7,38 @@
 <header th:insert="fragments/header.html :: header"></header>
 <div class="container mt-5" style="max-width: 600px">
     <h2>Edit Diagnosis</h2>
-    <form th:action="@{/diagnoses/edit/{id}(id=${diagnosis.id})}" th:object="${diagnosis}" method="post">
-        <input type="hidden" th:field="*{id}" />
+
+    <!-- Display global error message -->
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <!-- Diagnosis edit form -->
+    <form th:action="@{/diagnoses/edit/{id}(id=${id})}"
+          th:object="${diagnosis}"
+          method="post"
+          novalidate>
+
+        <!-- Hidden field for ID if needed in your POST body (optional) -->
+        <input type="hidden" name="id" th:value="${id}"/>
+
         <div class="form-group">
             <label for="description">Diagnosis Description</label>
-            <input type="text" id="description" name="description" th:field="*{description}" class="form-control" required>
-            <div th:if="${#fields.hasErrors('description')}">
-                <div th:errors="*{description}" class="error text-danger"></div>
-            </div>
+            <input type="text" id="description" name="description"
+                   th:field="*{description}"
+                   class="form-control"
+                   placeholder="Enter diagnosis description"/>
+
+            <!-- Field-specific validation error -->
+            <div th:if="${#fields.hasErrors('description')}"
+                 class="text-danger"
+                 th:errors="*{description}"></div>
         </div>
+
         <button type="submit" class="btn btn-primary w-100">Save Diagnosis</button>
     </form>
-    <a class="mt-2 mb-2" th:href="@{/diagnoses}">Back to diagnosis list</a>
+
+
+    <!-- Link to return to diagnosis list -->
+    <a class="mt-2 d-block text-center" th:href="@{/diagnoses}">Back to Diagnosis List</a>
 </div>
 <footer th:insert="fragments/footer.html :: footer"></footer>
 </body>

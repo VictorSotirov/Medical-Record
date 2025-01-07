@@ -1,18 +1,20 @@
 package com.example.medical_record.services;
 
 import com.example.medical_record.DTOs.diagnosis.*;
+import com.example.medical_record.exceptions.DiagnosisAlreadyExistsException;
+import com.example.medical_record.exceptions.DiagnosisNotFoundException;
 
 import java.util.List;
 
 public interface DiagnosisService
 {
-    void createDiagnosis(DiagnosisRequestDTO diagnosis);
+    void createDiagnosis(DiagnosisRequestDTO diagnosis) throws DiagnosisAlreadyExistsException;
 
-    void updateDiagnosis(Long id, DiagnosisRequestDTO updatedDiagnosis);
+    void updateDiagnosis(Long id, DiagnosisRequestDTO updatedDiagnosis) throws DiagnosisAlreadyExistsException, DiagnosisNotFoundException;
 
     void deleteDiagnosis(Long id);
 
-    DiagnosisResponseDTO getDiagnosisById(Long id);
+    DiagnosisResponseDTO getDiagnosisById(Long id) throws DiagnosisNotFoundException;
 
     List<DiagnosisResponseDTO> getAllDiagnoses();
 

@@ -8,13 +8,23 @@
 <div class="container mt-5" style="max-width: 600px">
     <h2>Create New Diagnosis</h2>
 
+    <!-- Error message display -->
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
     <!-- Form for creating a new diagnosis -->
     <form th:action="@{/diagnoses/create}" th:object="${diagnosis}" method="post">
         <div class="form-group">
-            <textarea id="description" name="description" th:field="*{description}" class="form-control" placeholder="Enter diagnosis description" required rows="3"></textarea>
+            <textarea id="description" name="description" th:field="*{description}"
+                      class="form-control" placeholder="Enter diagnosis description" rows="3">
 
-            <!-- Error display for the 'description' field -->
-            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error text-danger"></div>
+            </textarea>
+
+            <!-- Display validation error for description -->
+            <div th:if="${#fields.hasErrors('description')}"
+                 th:errors="*{description}"
+                 class="text-danger">
+
+            </div>
         </div>
 
         <!-- Submit button -->

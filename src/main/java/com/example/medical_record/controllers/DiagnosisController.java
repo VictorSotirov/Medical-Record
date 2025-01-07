@@ -3,7 +3,10 @@ package com.example.medical_record.controllers;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisFrequencyDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisRequestDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
+import com.example.medical_record.exceptions.DiagnosisAlreadyExistsException;
+import com.example.medical_record.exceptions.DiagnosisNotFoundException;
 import com.example.medical_record.services.DiagnosisService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,13 +33,6 @@ public class DiagnosisController
         return "diagnosis/diagnoses"; // Return the correct Thymeleaf template
     }
 
-    //GET SPECIFIC DIAGNOSIS
-    @GetMapping("/{id}")
-    public DiagnosisResponseDTO getDiagnosisById(@PathVariable Long id)
-    {
-        return this.diagnosisService.getDiagnosisById(id);
-    }
-
     //GET CREATE DIAGNOSIS FORM
     @GetMapping("/create")
     public String getCreateDiagnosisPage(Model model)
@@ -48,14 +44,24 @@ public class DiagnosisController
 
     //SEND DIAGNOSIS FORM
     @PostMapping("/create")
-    public String createDiagnosis(@ModelAttribute("diagnosis") DiagnosisRequestDTO diagnosisToCreate, BindingResult result) throws RuntimeException
+    public String createDiagnosis(@ModelAttribute("diagnosis") @Valid DiagnosisRequestDTO diagnosisToCreate,
+                                  BindingResult result, Model model)
     {
         if(result.hasErrors())
         {
             return "diagnosis/create-diagnosis";
         }
 
-        this.diagnosisService.createDiagnosis(diagnosisToCreate);
+        try
+        {
+            this.diagnosisService.createDiagnosis(diagnosisToCreate);
+        }
+        catch (DiagnosisAlreadyExistsException e)
+        {
+            model.addAttribute("errorMessage", e.getMessage()); // Add exception message to the model
+
+            return "diagnosis/create-diagnosis"; // Return to the form with the error message
+        }
 
         return "redirect:/diagnoses";
     }
@@ -64,23 +70,60 @@ public class DiagnosisController
     @GetMapping("/edit/{id}")
     public String getEditDiagnosisPage(@PathVariable Long id, Model model)
     {
-        DiagnosisResponseDTO responseFromDB = this.diagnosisService.getDiagnosisById(id);
+        try
+        {
+            DiagnosisResponseDTO responseFromDB = this.diagnosisService.getDiagnosisById(id);
 
-        model.addAttribute("diagnosis", responseFromDB);
+            model.addAttribute("diagnosis", responseFromDB);
 
-        return "diagnosis/edit-diagnosis";
+            return "diagnosis/edit-diagnosis";
+        }
+        catch (DiagnosisNotFoundException dnfe)
+        {
+            model.addAttribute("errorMessage", dnfe.getMessage());
+
+            return "diagnosis/diagnosis-not-found";
+        }
     }
 
     //SEND EDIT DIAGNOSIS FORM
     @PostMapping("/edit/{id}")
-    public String editDiagnosis(@PathVariable Long id, @ModelAttribute("diagnosis") DiagnosisRequestDTO diagnosisToEdit, BindingResult result) throws RuntimeException
+    public String editDiagnosis(@PathVariable Long id, @ModelAttribute("diagnosis") @Valid DiagnosisRequestDTO diagnosisToEdit, BindingResult result, Model model)
     {
+
         if(result.hasErrors())
         {
+            model.addAttribute("diagnosis", diagnosisToEdit);
+
+            model.addAttribute("id", id);
+
             return "diagnosis/edit-diagnosis";
         }
 
-        this.diagnosisService.updateDiagnosis(id, diagnosisToEdit);
+        try
+        {
+            this.diagnosisService.updateDiagnosis(id, diagnosisToEdit);
+        }
+        catch (DiagnosisAlreadyExistsException daee)
+        {
+            model.addAttribute("diagnosis", diagnosisToEdit);
+
+            model.addAttribute("id", id);
+
+            model.addAttribute("errorMessage", daee.getMessage());
+
+            return "diagnosis/edit-diagnosis";
+        }
+        catch (DiagnosisNotFoundException dnfe)
+        {
+            model.addAttribute("diagnosis", diagnosisToEdit);
+
+            model.addAttribute("id", id);
+
+            model.addAttribute("errorMessage", dnfe.getMessage());
+
+            return "diagnosis/edit-diagnosis";
+        }
 
         return "redirect:/diagnoses"; // Redirect to the diagnoses list
     }

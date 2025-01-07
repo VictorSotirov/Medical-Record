@@ -5,11 +5,14 @@ import com.example.medical_record.DTOs.diagnosis.DiagnosisRequestDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
 import com.example.medical_record.data.DiagnosisRepository;
 import com.example.medical_record.data.entities.Diagnosis;
+import com.example.medical_record.exceptions.DiagnosisAlreadyExistsException;
+import com.example.medical_record.exceptions.DiagnosisNotFoundException;
 import com.example.medical_record.services.DiagnosisService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,8 +23,14 @@ public class DiagnosisServiceImpl implements DiagnosisService
 
     //CREATE DIAGNOSIS
     @Override
-    public void createDiagnosis(DiagnosisRequestDTO diagnosisToCreate)
+    public void createDiagnosis(DiagnosisRequestDTO diagnosisToCreate) throws DiagnosisAlreadyExistsException
     {
+        //CHECK IF DIAGNOSIS WITH SAME DESCRIPTION ALREADY EXISTS
+        if (this.diagnosisRepository.findByDescription(diagnosisToCreate.getDescription()).isPresent())
+        {
+            throw new DiagnosisAlreadyExistsException("Diagnosis already exists");
+        }
+
         Diagnosis diagnosis = mapToEntity(diagnosisToCreate);
 
         this.diagnosisRepository.save(diagnosis);
@@ -29,10 +38,21 @@ public class DiagnosisServiceImpl implements DiagnosisService
 
     //UPDATE DIAGNOSIS
     @Override
-    public void updateDiagnosis(Long id, DiagnosisRequestDTO updatedDiagnosis)
+    public void updateDiagnosis(Long id, DiagnosisRequestDTO updatedDiagnosis) throws DiagnosisAlreadyExistsException, DiagnosisNotFoundException
     {
         Diagnosis existingDiagnosis = this.diagnosisRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Diagnosis with id: " + id + " not found."));
+                .orElseThrow(() -> new DiagnosisNotFoundException("Diagnosis with id: " + id + " not found."));
+
+        Optional<Diagnosis> diagnosisByDescription = this.diagnosisRepository.findByDescription(updatedDiagnosis.getDescription());
+
+        if (diagnosisByDescription.isPresent())
+        {
+            //CHECK TO SEE IF USER HAS NOT MADE ANY CHANGES OR IS TRYING TO CHANGE TO EXISTING DIAGNOSIS
+            if (!diagnosisByDescription.get().getId().equals(id))
+            {
+                throw new DiagnosisAlreadyExistsException("Diagnosis already exists");
+            }
+        }
 
         existingDiagnosis.setDescription(updatedDiagnosis.getDescription());
 
@@ -51,10 +71,10 @@ public class DiagnosisServiceImpl implements DiagnosisService
 
     //GET DIAGNOSIS BY ID
     @Override
-    public DiagnosisResponseDTO getDiagnosisById(Long id)
+    public DiagnosisResponseDTO getDiagnosisById(Long id) throws DiagnosisNotFoundException
     {
         Diagnosis diagnosis = this.diagnosisRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Diagnosis with id: " + id + " not found."));
+                .orElseThrow(() -> new DiagnosisNotFoundException("Diagnosis with id: " + id + " not found."));
 
         return mapToResponseDTO(diagnosis);
     }
