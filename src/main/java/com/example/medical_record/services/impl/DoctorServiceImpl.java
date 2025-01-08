@@ -7,6 +7,7 @@ import com.example.medical_record.DTOs.patient.PatientResponseDTO;
 import com.example.medical_record.data.DoctorRepository;
 import com.example.medical_record.data.entities.Doctor;
 import com.example.medical_record.data.entities.Patient;
+import com.example.medical_record.exceptions.doctor.DoctorNotFoundException;
 import com.example.medical_record.services.DoctorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,10 @@ public class DoctorServiceImpl implements DoctorService
 
     //UPDATE DOCTOR
     @Override
-    public void updateDoctor(Long id, DoctorRequestDTO updatedDoctor)
+    public void updateDoctor(Long id, DoctorRequestDTO updatedDoctor) throws DoctorNotFoundException
     {
         Doctor existingDoctor = this.doctorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Doctor with id: " + id + " not found."));
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + id + " not found."));
 
         existingDoctor.setFirstName(updatedDoctor.getFirstName());
 
@@ -48,10 +49,10 @@ public class DoctorServiceImpl implements DoctorService
 
     //DELETE DOCTOR
     @Override
-    public void deleteDoctor(Long id)
+    public void deleteDoctor(Long id) throws DoctorNotFoundException
     {
         Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Doctor with id " + id + " not found."));
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor with id " + id + " not found."));
 
         doctor.setDeleted(true);
 
@@ -60,10 +61,10 @@ public class DoctorServiceImpl implements DoctorService
 
     //GET DOCTOR BY ID
     @Override
-    public DoctorResponseDTO getDoctorById(Long id)
+    public DoctorResponseDTO getDoctorById(Long id) throws DoctorNotFoundException
     {
         Doctor doctor = doctorRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new RuntimeException("Doctor with id " + id + " not found."));
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor with id " + id + " not found."));
 
         return mapToResponseDTO(doctor);
     }

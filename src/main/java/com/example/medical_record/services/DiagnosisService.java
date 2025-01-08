@@ -1,8 +1,8 @@
 package com.example.medical_record.services;
 
 import com.example.medical_record.DTOs.diagnosis.*;
-import com.example.medical_record.exceptions.DiagnosisAlreadyExistsException;
-import com.example.medical_record.exceptions.DiagnosisNotFoundException;
+import com.example.medical_record.exceptions.diagnosis.DiagnosisAlreadyExistsException;
+import com.example.medical_record.exceptions.diagnosis.DiagnosisNotFoundException;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface DiagnosisService
 
     void updateDiagnosis(Long id, DiagnosisRequestDTO updatedDiagnosis) throws DiagnosisAlreadyExistsException, DiagnosisNotFoundException;
 
-    void deleteDiagnosis(Long id);
+    void deleteDiagnosis(Long id) throws DiagnosisNotFoundException;
 
     DiagnosisResponseDTO getDiagnosisById(Long id) throws DiagnosisNotFoundException;
 

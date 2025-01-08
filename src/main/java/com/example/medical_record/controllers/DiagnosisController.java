@@ -3,8 +3,8 @@ package com.example.medical_record.controllers;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisFrequencyDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisRequestDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
-import com.example.medical_record.exceptions.DiagnosisAlreadyExistsException;
-import com.example.medical_record.exceptions.DiagnosisNotFoundException;
+import com.example.medical_record.exceptions.diagnosis.DiagnosisAlreadyExistsException;
+import com.example.medical_record.exceptions.diagnosis.DiagnosisNotFoundException;
 import com.example.medical_record.services.DiagnosisService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -130,11 +130,20 @@ public class DiagnosisController
 
     //DELETE DIAGNOSIS
     @GetMapping("/delete/{id}")
-    public String deleteDiagnosis(@PathVariable Long id)
+    public String deleteDiagnosis(@PathVariable Long id, Model model)
     {
-        this.diagnosisService.deleteDiagnosis(id);
+        try
+        {
+            this.diagnosisService.deleteDiagnosis(id);
 
-        return "redirect:/diagnoses";
+            return "redirect:/diagnoses";
+        }
+        catch (DiagnosisNotFoundException dnfe)
+        {
+            model.addAttribute("errorMessage", dnfe.getMessage());
+
+            return "diagnosis/diagnosis-not-found";
+        }
     }
 
     //GET MOST COMMON DIAGNOSES

@@ -1,4 +1,4 @@
-package com.example.medical_record.exceptions;
+package com.example.medical_record.exceptions.diagnosis;
 
 public class DiagnosisNotFoundException extends Exception
 {

@@ -8,10 +8,6 @@
 <div class="container">
     <h1>Patients Page</h1>
 
-    <!-- Success and error messages -->
-    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
-    <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
-
     <!-- Buttons for actions -->
     <div class="btn-group mb-3" role="group" style="display: flex; justify-content: space-between;">
         <a href="/patients/create" class="btn btn-primary" style="border: 1px solid #ffffff;">Create New Patient</a>
@@ -55,6 +51,7 @@
         <tr>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Health Insurance Paid</th>
             <th>Doctor Assigned</th>
             <th>Actions</th>
         </tr>
@@ -63,6 +60,10 @@
         <tr th:each="patient : ${patients}">
             <td th:text="${patient.firstName}">Patient First Name</td>
             <td th:text="${patient.lastName}">Patient Last Name</td>
+            <td>
+                <!-- Display whether health insurance is paid -->
+                <span th:text="${patient.healthInsurancePaid ? 'Yes' : 'No'}"></span>
+            </td>
             <td>
                 <!-- Display doctor's name if assigned, otherwise show "No doctor assigned" -->
                 <span th:if="${patient.personalDoctor != null}" th:text="${patient.personalDoctor.firstName + ' ' + patient.personalDoctor.lastName}">Doctor Name</span>

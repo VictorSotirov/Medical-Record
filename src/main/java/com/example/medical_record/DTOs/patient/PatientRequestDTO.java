@@ -1,6 +1,7 @@
 package com.example.medical_record.DTOs.patient;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class PatientRequestDTO
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Last name must contain only letters and be one word!")
     private String lastName;
 
+    @NotNull
     private boolean isHealthInsurancePaid;
 
     private Long personalDoctorId;

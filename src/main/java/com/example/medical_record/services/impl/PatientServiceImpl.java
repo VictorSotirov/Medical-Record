@@ -10,6 +10,8 @@ import com.example.medical_record.data.PatientRepository;
 import com.example.medical_record.data.entities.Doctor;
 import com.example.medical_record.data.entities.Examination;
 import com.example.medical_record.data.entities.Patient;
+import com.example.medical_record.exceptions.doctor.DoctorNotFoundException;
+import com.example.medical_record.exceptions.patient.PatientNotFoundException;
 import com.example.medical_record.services.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,10 +39,10 @@ public class PatientServiceImpl implements PatientService
 
     //UPDATE PATIENT
     @Override
-    public void updatePatient(Long id, PatientRequestDTO patientToUpdate)
+    public void updatePatient(Long id, PatientRequestDTO patientToUpdate) throws PatientNotFoundException, DoctorNotFoundException
     {
         Patient existingPatient = this.patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient with id " + id + " not found."));
+                .orElseThrow(() -> new PatientNotFoundException("Patient with id " + id + " not found."));
 
         existingPatient.setFirstName(patientToUpdate.getFirstName());
 
@@ -51,7 +53,7 @@ public class PatientServiceImpl implements PatientService
         if (patientToUpdate.getPersonalDoctorId() != null)
         {
             Doctor personalDoctor = this.doctorRepository.findById(patientToUpdate.getPersonalDoctorId())
-                    .orElseThrow(() -> new RuntimeException("Doctor with id " + patientToUpdate.getPersonalDoctorId() + " not found."));
+                    .orElseThrow(() -> new DoctorNotFoundException("Doctor with id " + patientToUpdate.getPersonalDoctorId() + " not found."));
 
             existingPatient.setPersonalDoctor(personalDoctor);
         }
@@ -65,10 +67,10 @@ public class PatientServiceImpl implements PatientService
 
     //DELETE PATIENT
     @Override
-    public void deletePatient(Long id)
+    public void deletePatient(Long id) throws PatientNotFoundException
     {
         Patient patient = this.patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient with id " + id + " not found."));
+                .orElseThrow(() -> new PatientNotFoundException("Patient with id " + id + " not found."));
 
         patient.setDeleted(true);
 
@@ -76,10 +78,10 @@ public class PatientServiceImpl implements PatientService
     }
 
     @Override
-    public PatientResponseDTO getPatientById(Long id)
+    public PatientResponseDTO getPatientById(Long id) throws PatientNotFoundException
     {
         Patient patient = this.patientRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new RuntimeException("Patient with id " + id + " not found."));
+                .orElseThrow(() -> new PatientNotFoundException("Patient with id " + id + " not found."));
 
         return mapToResponseDTO(patient);
     }

@@ -5,8 +5,8 @@ import com.example.medical_record.DTOs.diagnosis.DiagnosisRequestDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
 import com.example.medical_record.data.DiagnosisRepository;
 import com.example.medical_record.data.entities.Diagnosis;
-import com.example.medical_record.exceptions.DiagnosisAlreadyExistsException;
-import com.example.medical_record.exceptions.DiagnosisNotFoundException;
+import com.example.medical_record.exceptions.diagnosis.DiagnosisAlreadyExistsException;
+import com.example.medical_record.exceptions.diagnosis.DiagnosisNotFoundException;
 import com.example.medical_record.services.DiagnosisService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -62,9 +62,10 @@ public class DiagnosisServiceImpl implements DiagnosisService
     //DELETE DIAGNOSIS
     // Potentially REFACTOR FOR SOFT DELETE
     @Override
-    public void deleteDiagnosis(Long id) {
+    public void deleteDiagnosis(Long id) throws DiagnosisNotFoundException
+    {
         Diagnosis diagnosis = this.diagnosisRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Diagnosis with id: " + id + " not found."));
+                .orElseThrow(() -> new DiagnosisNotFoundException("Diagnosis with id: " + id + " not found."));
 
         this.diagnosisRepository.delete(diagnosis);
     }

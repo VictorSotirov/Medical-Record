@@ -5,6 +5,8 @@ import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientRequestDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientsWithExaminationsDTO;
+import com.example.medical_record.exceptions.doctor.DoctorNotFoundException;
+import com.example.medical_record.exceptions.patient.PatientNotFoundException;
 import com.example.medical_record.services.DiagnosisService;
 import com.example.medical_record.services.DoctorService;
 import com.example.medical_record.services.PatientService;
@@ -47,13 +49,6 @@ public class PatientController
         return "patient/patients";
     }
 
-    //GET SPECIFIC PATIENT
-    @GetMapping("/{id}")
-    public PatientResponseDTO getPatientById(@PathVariable Long id)
-    {
-        return this.patientService.getPatientById(id);
-    }
-
     //GET CREATE PATIENT FORM
     @GetMapping("/create")
     public String getCreatePatientPage(Model model)
@@ -83,36 +78,84 @@ public class PatientController
     @GetMapping("/edit/{id}")
     public String getEditPatientPage(@PathVariable Long id, Model model)
     {
-        PatientResponseDTO responseFromDB = this.patientService.getPatientById(id);
+        try
+        {
+            PatientResponseDTO responseFromDB = this.patientService.getPatientById(id);
 
-        model.addAttribute("patient", responseFromDB);
+            PatientRequestDTO editDTO = new PatientRequestDTO();
 
-        model.addAttribute("doctors", this.doctorService.getAllDoctors());
+            editDTO.setFirstName(responseFromDB.getFirstName());
 
-        return "patient/edit-patient";
+            editDTO.setLastName(responseFromDB.getLastName());
+
+            editDTO.setHealthInsurancePaid(responseFromDB.isHealthInsurancePaid());
+
+            if (responseFromDB.getPersonalDoctor() != null)
+            {
+                editDTO.setPersonalDoctorId(responseFromDB.getPersonalDoctor().getId());
+            }
+
+            model.addAttribute("patient", editDTO);
+
+            model.addAttribute("patientId", id);
+
+            model.addAttribute("doctors", this.doctorService.getAllDoctors());
+
+            return "patient/edit-patient";
+        }
+        catch (PatientNotFoundException pnfe)
+        {
+            model.addAttribute("errorMessage", pnfe.getMessage());
+
+            return "patient/patient-not-found";
+        }
     }
 
     //SEND EDIT PATIENT FORM
     @PostMapping("/edit/{id}")
-    public String editPatient(@PathVariable Long id, @ModelAttribute("patient") @Valid PatientRequestDTO patientToEdit, BindingResult result) throws RuntimeException
+    public String editPatient(@PathVariable Long id, @ModelAttribute("patient") @Valid PatientRequestDTO patientToEdit, BindingResult result, Model model)
     {
         if(result.hasErrors())
         {
             return "patient/edit-patient";
         }
 
-        this.patientService.updatePatient(id, patientToEdit);
+        try
+        {
+            this.patientService.updatePatient(id, patientToEdit);
 
-        return "redirect:/patients";
+            return "redirect:/patients";
+        }
+        catch (PatientNotFoundException pnfe)
+        {
+            model.addAttribute("errorMessage", pnfe.getMessage());
+
+            return "patient/patient-not-found";
+        }
+        catch (DoctorNotFoundException dnfe)
+        {
+            model.addAttribute("errorMessage", dnfe.getMessage());
+
+            return "patient/patient-not-found";
+        }
     }
 
     //DELETE PATIENT
     @GetMapping("/delete/{id}")
-    public String deletePatient(@PathVariable Long id)
+    public String deletePatient(@PathVariable Long id, Model model)
     {
-        this.patientService.deletePatient(id);
+        try
+        {
+            this.patientService.deletePatient(id);
 
-        return "redirect:/patients";
+            return "redirect:/patients";
+        }
+        catch (PatientNotFoundException pnfe)
+        {
+            model.addAttribute("errorMessage", pnfe.getMessage());
+
+            return "patient/patient-not-found";
+        }
     }
 
 

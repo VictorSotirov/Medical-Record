@@ -4,6 +4,7 @@ import com.example.medical_record.DTOs.doctor.DoctorExaminationCountDTO;
 import com.example.medical_record.DTOs.doctor.DoctorRequestDTO;
 import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.doctor.DoctorWithPatientsDTO;
+import com.example.medical_record.exceptions.doctor.DoctorNotFoundException;
 import com.example.medical_record.services.DoctorService;
 import com.example.medical_record.services.ExaminationService;
 import jakarta.validation.Valid;
@@ -36,13 +37,6 @@ public class DoctorController
         return "doctor/doctors";
     }
 
-    //GET SPECIFIC DOCTOR
-    @GetMapping("/{id}")
-    public DoctorResponseDTO getDoctorById(@PathVariable Long id)
-    {
-        return this.doctorService.getDoctorById(id);
-    }
-
     //GET CREATE DOCTOR FORM
     @GetMapping("/create")
     public String getCreateDoctorPage(Model model)
@@ -52,9 +46,9 @@ public class DoctorController
         return "doctor/create-doctor";
     }
 
-    //SEND DOCTOR FORM
+    //SEND CREATE DOCTOR FORM
     @PostMapping("/create")
-    public String createDoctor(@ModelAttribute("doctor") @Valid DoctorRequestDTO doctorToCreate, BindingResult result) throws RuntimeException
+    public String createDoctor(@ModelAttribute("doctor") @Valid DoctorRequestDTO doctorToCreate, BindingResult result)
     {
         if(result.hasErrors())
         {
@@ -70,34 +64,64 @@ public class DoctorController
     @GetMapping("/edit/{id}")
     public String getEditDoctorPage(@PathVariable Long id, Model model)
     {
-        DoctorResponseDTO responseFromDB = this.doctorService.getDoctorById(id);
+        try
+        {
+            DoctorResponseDTO responseFromDB = this.doctorService.getDoctorById(id);
 
-        model.addAttribute("doctor", responseFromDB);
+            model.addAttribute("doctor", responseFromDB);
 
-        return "doctor/edit-doctor";
+            return "doctor/edit-doctor";
+        }
+        catch (DoctorNotFoundException dnfe)
+        {
+            model.addAttribute("errorMessage", dnfe.getMessage());
+
+            return "doctor/doctor-not-found";
+        }
+
     }
 
     //SEND EDIT DOCTOR FORM
     @PostMapping("/edit/{id}")
-    public String editDoctor(@PathVariable Long id, @ModelAttribute("doctor") @Valid DoctorRequestDTO doctorToEdit, BindingResult result) throws RuntimeException
+    public String editDoctor(@PathVariable Long id, @ModelAttribute("doctor") @Valid DoctorRequestDTO doctorToEdit, BindingResult result, Model model)
     {
         if(result.hasErrors())
         {
             return "doctor/edit-doctor";
         }
 
-        this.doctorService.updateDoctor(id, doctorToEdit);
+        try
+        {
+            this.doctorService.updateDoctor(id, doctorToEdit);
+        }
+        catch (DoctorNotFoundException dnfe)
+        {
+            model.addAttribute("errorMessage", dnfe.getMessage());
+
+            return "doctor/edit-doctor";
+        }
+
+
 
         return "redirect:/doctors";
     }
 
     //DELETE DOCTOR
     @GetMapping("/delete/{id}")
-    public String deleteDoctor(@PathVariable Long id)
+    public String deleteDoctor(@PathVariable Long id, Model model)
     {
-        this.doctorService.deleteDoctor(id);
+        try
+        {
+            this.doctorService.deleteDoctor(id);
 
-        return "redirect:/doctors";
+            return "redirect:/doctors";
+        }
+        catch (DoctorNotFoundException dnfe)
+        {
+            model.addAttribute("errorMessage", dnfe.getMessage());
+
+            return "doctor/doctor-not-found";
+        }
     }
 
     //GET ALL DOCTORS AND PATIENTS RELATED TO THEM

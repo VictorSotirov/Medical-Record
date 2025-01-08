@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Error')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="container mt-5">
+    <h1>Error</h1>
+    <div class="alert alert-danger" th:text="${errorMessage}"></div>
+    <a class="btn btn-primary mt-3" th:href="@{/doctors}">Back to Doctor List</a>
+</div>
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

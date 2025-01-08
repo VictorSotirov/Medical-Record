@@ -5,45 +5,60 @@
 </head>
 <body>
 <header th:insert="fragments/header.html :: header"></header>
+
 <div class="container mt-5" style="max-width: 600px">
     <h2>Create New Patient</h2>
 
-    <form th:action="@{/patients/create}" th:object="${patient}" method="post">
+    <!-- Patient creation form -->
+    <form th:action="@{/patients/create}" th:object="${patient}" method="post" novalidate>
         <!-- First Name -->
         <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" th:field="*{firstName}" class="form-control" placeholder="Enter first name" required>
+            <input type="text" id="firstName" name="firstName" th:field="*{firstName}" class="form-control" placeholder="Enter first name" />
             <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></div>
         </div>
 
         <!-- Last Name -->
         <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-control" placeholder="Enter last name" required>
+            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-control" placeholder="Enter last name" />
             <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></div>
         </div>
 
-        <!-- Health Insurance Paid -->
+        <!-- Health Insurance Paid (checkbox) -->
         <div class="form-group form-check">
-            <input type="checkbox" id="healthInsurancePaid" name="healthInsurancePaid" th:field="*{healthInsurancePaid}" class="form-check-input">
+            <input type="checkbox" id="healthInsurancePaid" name="healthInsurancePaid" th:field="*{healthInsurancePaid}" class="form-check-input" />
             <label for="healthInsurancePaid" class="form-check-label">Health Insurance Paid</label>
+            <!-- If you need an error for this field, add a block similarly -->
+            <div th:if="${#fields.hasErrors('healthInsurancePaid')}" th:errors="*{healthInsurancePaid}" class="text-danger">
+            </div>
         </div>
 
-        <!-- Select Doctor -->
+        <!-- Personal Doctor (drop-down) -->
         <div class="form-group">
             <label for="personalDoctorId">Personal Doctor</label>
             <select id="personalDoctorId" name="personalDoctorId" th:field="*{personalDoctorId}" class="form-control">
                 <option value="">-- Select Doctor --</option>
-                <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.firstName + ' ' + doctor.lastName}"></option>
+                <option th:each="doctor : ${doctors}"
+                        th:value="${doctor.id}"
+                        th:text="${doctor.firstName + ' ' + doctor.lastName}">
+                </option>
             </select>
+            <!-- If you need an error for personalDoctorId, add a block similarly -->
+            <div th:if="${#fields.hasErrors('personalDoctorId')}"
+                 th:errors="*{personalDoctorId}"
+                 class="text-danger">
+            </div>
         </div>
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary w-100">Create Patient</button>
     </form>
 
+    <!-- Link back to the Patients list -->
     <a class="mt-3 d-block text-center" th:href="@{/patients}">Back to Patients List</a>
 </div>
+
 <footer th:insert="fragments/footer.html :: footer"></footer>
 </body>
 </html>

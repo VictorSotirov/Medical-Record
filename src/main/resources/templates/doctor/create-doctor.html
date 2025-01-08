@@ -13,21 +13,21 @@
         <!-- First Name Field -->
         <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" th:field="*{firstName}" class="form-control" placeholder="Enter first name" required>
-            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error text-danger"></div>
+            <input type="text" id="firstName" name="firstName" th:field="*{firstName}" class="form-control" placeholder="Enter first name" />
+            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></div>
         </div>
 
         <!-- Last Name Field -->
         <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-control" placeholder="Enter last name" required>
+            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-control" placeholder="Enter last name">
             <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error text-danger"></div>
         </div>
 
         <!-- Specialty Field -->
         <div class="form-group">
             <label for="specialty">Specialty</label>
-            <input type="text" id="specialty" name="specialty" th:field="*{specialty}" class="form-control" placeholder="Enter specialty" required>
+            <input type="text" id="specialty" name="specialty" th:field="*{specialty}" class="form-control" placeholder="Enter specialty">
             <div th:if="${#fields.hasErrors('specialty')}" th:errors="*{specialty}" class="error text-danger"></div>
         </div>
 

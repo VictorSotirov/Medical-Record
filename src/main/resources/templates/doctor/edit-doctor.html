@@ -5,43 +5,66 @@
 </head>
 <body>
 <header th:insert="fragments/header.html :: header"></header>
+
 <div class="container mt-5" style="max-width: 600px">
   <h2>Edit Doctor</h2>
-  <form th:action="@{/doctors/edit/{id}(id=${doctor.id})}" th:object="${doctor}" method="post">
-    <input type="hidden" th:field="*{id}" />
+
+  <!-- Display global error message -->
+  <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+  <!-- Doctor edit form -->
+  <form th:action="@{/doctors/edit/{id}(id=${id})}"
+        th:object="${doctor}"
+        method="post"
+        novalidate>
+
+    <!-- Hidden field for ID if needed in the POST body -->
+    <input type="hidden" name="id" th:value="${id}" />
 
     <!-- First Name Field -->
     <div class="form-group">
       <label for="firstName">First Name</label>
-      <input type="text" id="firstName" name="firstName" th:field="*{firstName}" class="form-control" required>
-      <div th:if="${#fields.hasErrors('firstName')}">
-        <div th:errors="*{firstName}" class="error text-danger"></div>
-      </div>
+      <input type="text"
+             id="firstName"
+             name="firstName"
+             th:field="*{firstName}"
+             class="form-control"
+             placeholder="Enter first name">
+      <div th:if="${#fields.hasErrors('firstName')}" class="text-danger" th:errors="*{firstName}"></div>
     </div>
 
     <!-- Last Name Field -->
     <div class="form-group">
       <label for="lastName">Last Name</label>
-      <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-control" required>
-      <div th:if="${#fields.hasErrors('lastName')}">
-        <div th:errors="*{lastName}" class="error text-danger"></div>
-      </div>
+      <input type="text"
+             id="lastName"
+             name="lastName"
+             th:field="*{lastName}"
+             class="form-control"
+             placeholder="Enter last name">
+      <div th:if="${#fields.hasErrors('lastName')}" class="text-danger" th:errors="*{lastName}"></div>
     </div>
 
     <!-- Specialty Field -->
     <div class="form-group">
       <label for="specialty">Specialty</label>
-      <input type="text" id="specialty" name="specialty" th:field="*{specialty}" class="form-control" required>
-      <div th:if="${#fields.hasErrors('specialty')}">
-        <div th:errors="*{specialty}" class="error text-danger"></div>
-      </div>
+      <input type="text"
+             id="specialty"
+             name="specialty"
+             th:field="*{specialty}"
+             class="form-control"
+             placeholder="Enter specialty">
+      <div th:if="${#fields.hasErrors('specialty')}" class="text-danger" th:errors="*{specialty}"></div>
     </div>
 
     <!-- Submit Button -->
     <button type="submit" class="btn btn-primary w-100">Save Doctor</button>
   </form>
-  <a class="mt-2 mb-2" th:href="@{/doctors}">Back to doctor list</a>
+
+  <!-- Link to go back to the list of doctors -->
+  <a class="mt-2 d-block text-center" th:href="@{/doctors}">Back to Doctor List</a>
 </div>
+
 <footer th:insert="fragments/footer.html :: footer"></footer>
 </body>
 </html>

@@ -12,25 +12,17 @@
     <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
     <!-- Diagnosis edit form -->
-    <form th:action="@{/diagnoses/edit/{id}(id=${id})}"
-          th:object="${diagnosis}"
-          method="post"
-          novalidate>
+    <form th:action="@{/diagnoses/edit/{id}(id=${id})}" th:object="${diagnosis}" method="post" novalidate>
 
         <!-- Hidden field for ID if needed in your POST body (optional) -->
         <input type="hidden" name="id" th:value="${id}"/>
 
         <div class="form-group">
             <label for="description">Diagnosis Description</label>
-            <input type="text" id="description" name="description"
-                   th:field="*{description}"
-                   class="form-control"
-                   placeholder="Enter diagnosis description"/>
+            <input type="text" id="description" name="description" th:field="*{description}" class="form-control" placeholder="Enter diagnosis description"/>
 
             <!-- Field-specific validation error -->
-            <div th:if="${#fields.hasErrors('description')}"
-                 class="text-danger"
-                 th:errors="*{description}"></div>
+            <div th:if="${#fields.hasErrors('description')}" class="text-danger" th:errors="*{description}"></div>
         </div>
 
         <button type="submit" class="btn btn-primary w-100">Save Diagnosis</button>
