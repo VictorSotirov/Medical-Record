@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Users')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+
+<div class="container">
+    <h1>Users Page</h1>
+
+    <!-- Success and error messages -->
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <!-- Actions -->
+    <div class="btn-group mb-3" role="group" aria-label="Controller Buttons"
+         style="display: flex; justify-content: space-between;">
+        <a href="/admin/users/create" class="btn btn-primary"
+           style="border: 1px solid #ffffff;">Create New User</a>
+    </div>
+
+    <!-- Table displaying users -->
+    <h2>All Users</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Enabled</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td>
+                <span th:text="${user.enabled}"></span>
+            </td>
+            <td>
+                <!-- You could display the user’s role IDs or do something fancier -->
+                <span th:text="${#strings.listJoin(user.roleIds, ', ')}">Roles</span>
+            </td>
+            <td>
+                <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" title="Edit"><i class="fa fa-edit"></i></a>
+                <a th:href="@{/admin/users/delete/{id}(id=${user.id})}"
+                   th:onclick="return confirm('Are you sure you want to delete this user?')"
+                   title="Delete"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

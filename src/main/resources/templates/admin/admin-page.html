@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Admin Panel')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+
+<div class="container mt-5" style="max-width: 600px;">
+    <h1>Admin Panel</h1>
+    <p>Manage your application’s data from here:</p>
+
+    <!-- Success / Error Messages if needed -->
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <!-- Button group linking to different functionalities -->
+    <div class="d-grid gap-2">
+        <!-- Diagnoses -->
+        <a th:href="@{/diagnoses}" class="btn btn-primary btn-lg">
+            View Diagnoses
+        </a>
+
+        <!-- Doctors -->
+        <a th:href="@{/doctors}" class="btn btn-primary btn-lg">
+            View Doctors
+        </a>
+
+        <!-- Examinations -->
+        <a th:href="@{/examinations}" class="btn btn-primary btn-lg">
+            View Examinations
+        </a>
+
+        <!-- Hospital Records -->
+        <a th:href="@{/hospital-records}" class="btn btn-primary btn-lg">
+            View Hospital Records
+        </a>
+
+        <!-- Patients -->
+        <a th:href="@{/patients}" class="btn btn-primary btn-lg">
+            View Patients
+        </a>
+
+        <!-- Roles -->
+        <a th:href="@{/admin/roles}" class="btn btn-primary btn-lg">
+            Manage Roles
+        </a>
+    </div>
+</div>
+
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

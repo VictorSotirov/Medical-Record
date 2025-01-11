@@ -1,4 +1,4 @@
-package com.example.medical_record.data;
+package com.example.medical_record.data.repositories;
 
 import com.example.medical_record.data.entities.Diagnosis;
 import org.springframework.data.jpa.repository.JpaRepository;

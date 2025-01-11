@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Edit Role')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+
+<div class="container">
+    <h1>Edit Role</h1>
+
+    <!-- Success and error messages -->
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <!-- Form for editing a role -->
+    <form th:action="@{/admin/roles/edit/{id}(id=${roleId})}"
+          th:object="${roleForm}"
+          method="post"
+          novalidate>
+
+        <div class="form-group">
+            <label for="authority">Role Authority</label>
+            <input type="text"
+                   id="authority"
+                   name="authority"
+                   th:field="*{authority}"
+                   class="form-control"
+                   placeholder="Enter role authority"
+            />
+            <!-- Field-specific validation errors -->
+            <div th:if="${#fields.hasErrors('authority')}"
+                 th:errors="*{authority}"
+                 class="text-danger"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+    </form>
+
+    <a class="mt-3 d-block text-center" th:href="@{/admin/roles}">Back to Roles List</a>
+</div>
+
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

@@ -4,7 +4,7 @@ import com.example.medical_record.DTOs.doctor.DoctorRequestDTO;
 import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.doctor.DoctorWithPatientsDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
-import com.example.medical_record.data.DoctorRepository;
+import com.example.medical_record.data.repositories.DoctorRepository;
 import com.example.medical_record.data.entities.Doctor;
 import com.example.medical_record.data.entities.Patient;
 import com.example.medical_record.exceptions.doctor.DoctorNotFoundException;

@@ -3,7 +3,7 @@ package com.example.medical_record.services.impl;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisFrequencyDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisRequestDTO;
 import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
-import com.example.medical_record.data.DiagnosisRepository;
+import com.example.medical_record.data.repositories.DiagnosisRepository;
 import com.example.medical_record.data.entities.Diagnosis;
 import com.example.medical_record.exceptions.diagnosis.DiagnosisAlreadyExistsException;
 import com.example.medical_record.exceptions.diagnosis.DiagnosisNotFoundException;

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="fragments/header-files.html :: header-files('Edit User')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+
+<div class="container">
+    <h1>Edit User</h1>
+
+    <!-- Success/error messages -->
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <!-- Edit user form -->
+    <form th:action="@{/admin/users/edit/{id}(id=${userId})}"
+          th:object="${userForm}"
+          method="post"
+          novalidate>
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text"
+                   id="username"
+                   th:field="*{username}"
+                   class="form-control"
+                   readonly="readonly" />
+            <div th:if="${#fields.hasErrors('username')}"
+                 th:errors="*{username}"
+                 class="text-danger"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">New Password (leave blank to keep existing)</label>
+            <input type="password"
+                   id="password"
+                   th:field="*{password}"
+                   class="form-control"
+                   placeholder="Enter new password if changing" />
+            <div th:if="${#fields.hasErrors('password')}"
+                 th:errors="*{password}"
+                 class="text-danger"></div>
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox"
+                   id="enabled"
+                   th:field="*{enabled}"
+                   class="form-check-input" />
+            <label for="enabled" class="form-check-label">Enabled</label>
+        </div>
+
+        <!-- Roles checkboxes again -->
+        <div class="form-group">
+            <label>Roles</label>
+            <div th:each="role : ${roles}">
+                <label class="form-check-label">
+                    <input type="checkbox"
+                           class="form-check-input"
+                           name="roleIds"
+                           th:value="${role.id}"
+                           th:checked="${userForm.roleIds.contains(role.id)}" />
+                    <span th:text="${role.authority}"></span>
+                </label>
+                <br/>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+    </form>
+
+    <a class="mt-3 d-block text-center" th:href="@{/admin/users}">Back to Users List</a>
+</div>
+
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>
