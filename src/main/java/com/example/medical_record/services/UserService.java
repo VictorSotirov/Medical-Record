@@ -9,7 +9,7 @@ public interface UserService extends UserDetailsService
 {
     List<UserDTO> getAllUsers();
     UserDTO getUserById(Long id);
-    void createUser(UserDTO userDTO);
+    void createAdmin(UserDTO userDTO);
     void updateUser(Long id, UserDTO userDTO);
     void deleteUser(Long id);
 }

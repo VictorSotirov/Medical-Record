@@ -4,15 +4,21 @@ import com.example.medical_record.DTOs.doctor.DoctorRequestDTO;
 import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.doctor.DoctorWithPatientsDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
+import com.example.medical_record.data.entities.auth.Role;
+import com.example.medical_record.data.entities.auth.User;
 import com.example.medical_record.data.repositories.DoctorRepository;
 import com.example.medical_record.data.entities.Doctor;
 import com.example.medical_record.data.entities.Patient;
+import com.example.medical_record.data.repositories.RoleRepository;
+import com.example.medical_record.data.repositories.UserRepository;
 import com.example.medical_record.exceptions.doctor.DoctorNotFoundException;
 import com.example.medical_record.services.DoctorService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +27,12 @@ public class DoctorServiceImpl implements DoctorService
 {
     private final DoctorRepository doctorRepository;
 
+    private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
     //CREATE DOCTOR
     @Override
     public void createDoctor(DoctorRequestDTO doctorToCreate)
@@ -28,6 +40,28 @@ public class DoctorServiceImpl implements DoctorService
         Doctor doctor = mapToEntity(doctorToCreate);
 
         this.doctorRepository.save(doctor);
+
+
+        User user = new User();
+
+        user.setUsername(doctorToCreate.getFirstName() + " " + doctorToCreate.getLastName());
+
+        user.setPassword(passwordEncoder.encode("1234")); // And a password
+
+
+        user.setDoctor(doctor);
+
+        user.addAuthority(this.roleRepository.findByAuthority("DOCTOR").orElseThrow(() -> new RuntimeException("Role 'DOCTOR' not found.")));
+
+        user.setAccountNonExpired(true);
+
+        user.setAccountNonLocked(true);
+
+        user.setCredentialsNonExpired(true);
+
+        user.setEnabled(true);
+
+        this.userRepository.save(user);
     }
 
     //UPDATE DOCTOR

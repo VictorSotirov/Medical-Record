@@ -41,7 +41,7 @@ public class RoleServiceImpl implements RoleService
         // Optional: check if authority already exists, etc.
         Role role = new Role();
 
-        role.setAuthority(roleDTO.getAuthority().toUpperCase());
+        role.setAuthority("ROLE_" + roleDTO.getAuthority().toUpperCase());
 
         Role savedRole = roleRepository.save(role);
 
@@ -54,7 +54,7 @@ public class RoleServiceImpl implements RoleService
         Role existingRole = roleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Role not found with ID: " + id));
 
-        existingRole.setAuthority(roleDTO.getAuthority().toUpperCase());
+        existingRole.setAuthority("ROLE_" + roleDTO.getAuthority().toUpperCase());
 
         Role updatedRole = roleRepository.save(existingRole);
 

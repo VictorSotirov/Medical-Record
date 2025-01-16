@@ -8,6 +8,7 @@ import com.example.medical_record.exceptions.diagnosis.DiagnosisNotFoundExceptio
 import com.example.medical_record.services.DiagnosisService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/diagnoses")
 public class DiagnosisController
 {

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/header-files.html :: header-files('My Exams')">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+
+<div class="container">
+    <h1>My Examinations</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Examination Date</th>
+            <th>Treatment Description</th>
+            <th>Sick Leave Days</th>
+            <th>Sick Leave Start</th>
+            <th>Doctor</th>
+            <th>Diagnosis</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="exam : ${exams}">
+            <td th:text="${exam.examinationDate}">2024-02-02</td>
+            <td th:text="${exam.treatmentDescription}">Treatment Info</td>
+            <td th:text="${exam.sickLeaveDays}">0</td>
+            <td th:text="${exam.sickLeaveStartDate}">2024-02-02</td>
+            <td th:text="${exam.doctor.firstName + ' ' + exam.doctor.lastName}">Doctor Name</td>
+            <td th:text="${exam.diagnosis.description}">Diagnosis Info</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer th:insert="fragments/footer.html :: footer"></footer>
+</body>
+</html>

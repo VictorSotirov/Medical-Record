@@ -39,29 +39,6 @@
                  class="text-danger"></div>
         </div>
 
-        <div class="form-group form-check">
-            <input type="checkbox"
-                   id="enabled"
-                   th:field="*{enabled}"
-                   class="form-check-input" />
-            <label for="enabled" class="form-check-label">Enabled</label>
-        </div>
-
-        <!-- Assign roles (multi-select or checkboxes) -->
-        <div class="form-group">
-            <label>Roles</label>
-            <div th:each="role : ${roles}">
-                <label class="form-check-label">
-                    <input type="checkbox"
-                           class="form-check-input"
-                           name="roleIds"
-                           th:value="${role.id}" />
-                    <span th:text="${role.authority}"></span>
-                </label>
-                <br/>
-            </div>
-        </div>
-
         <button type="submit" class="btn btn-primary w-100">Create User</button>
     </form>
 

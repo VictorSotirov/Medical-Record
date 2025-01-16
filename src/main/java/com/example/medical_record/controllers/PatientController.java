@@ -2,21 +2,28 @@ package com.example.medical_record.controllers;
 
 import com.example.medical_record.DTOs.diagnosis.DiagnosisResponseDTO;
 import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
+import com.example.medical_record.DTOs.examination.ExaminationResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientRequestDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientsWithExaminationsDTO;
+import com.example.medical_record.data.entities.Patient;
+import com.example.medical_record.data.entities.auth.User;
 import com.example.medical_record.exceptions.doctor.DoctorNotFoundException;
 import com.example.medical_record.exceptions.patient.PatientNotFoundException;
 import com.example.medical_record.services.DiagnosisService;
 import com.example.medical_record.services.DoctorService;
+import com.example.medical_record.services.ExaminationService;
 import com.example.medical_record.services.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -29,6 +36,8 @@ public class PatientController
     private final PatientService patientService;
 
     private final DiagnosisService diagnosisService;
+
+    private final ExaminationService examinationService;
 
     //GET ALL PATIENTS
     @GetMapping

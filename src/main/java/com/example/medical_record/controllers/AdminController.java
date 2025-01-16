@@ -6,7 +6,6 @@ import com.example.medical_record.services.RoleService;
 import com.example.medical_record.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -151,9 +150,7 @@ public class AdminController
 
         model.addAttribute("userForm", userForm);
 
-        model.addAttribute("roles", roleService.getAllRoles());
-
-        return "admin/create-user";
+        return "admin/create-admin";
     }
 
     /**
@@ -164,13 +161,15 @@ public class AdminController
             @ModelAttribute("userForm") @Valid UserDTO userDTO,
             BindingResult result,
             Model model
-    ) {
-        if (result.hasErrors()) {
-            model.addAttribute("roles", roleService.getAllRoles());
-            return "admin/create-user";
+    )
+    {
+        if (result.hasErrors())
+        {
+            return "admin/create-admin";
         }
 
-        userService.createUser(userDTO);
+        userService.createAdmin(userDTO);
+
         return "redirect:/admin/users";
     }
 
@@ -178,13 +177,14 @@ public class AdminController
      * Show form to edit an existing user
      */
     @GetMapping("/users/edit/{id}")
-    public String showEditUserForm(@PathVariable Long id, Model model) {
+    public String showEditUserForm(@PathVariable Long id, Model model)
+    {
         UserDTO userDTO = userService.getUserById(id);
+
         model.addAttribute("userForm", userDTO);
+
         model.addAttribute("userId", id);
 
-        // Add roles to model for selection
-        model.addAttribute("roles", roleService.getAllRoles());
         return "admin/edit-user";
     }
 
@@ -197,10 +197,12 @@ public class AdminController
             @ModelAttribute("userForm") @Valid UserDTO userDTO,
             BindingResult result,
             Model model
-    ) {
-        if (result.hasErrors()) {
+    )
+    {
+        if (result.hasErrors())
+        {
             model.addAttribute("userId", id);
-            model.addAttribute("roles", roleService.getAllRoles());
+
             return "admin/edit-user";
         }
 

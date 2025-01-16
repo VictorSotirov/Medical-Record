@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -13,6 +12,9 @@ import java.util.Set;
 @Table(name = "doctors")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Doctor
 {
     @Id
@@ -32,6 +34,7 @@ public class Doctor
     @Column(name = "specialty", nullable = false, length = 20)
     private String specialty;
 
+    @Builder.Default
     @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isDeleted = false;
 

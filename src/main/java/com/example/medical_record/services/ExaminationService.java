@@ -23,4 +23,6 @@ public interface ExaminationService
     List<DoctorExaminationCountDTO> getExaminationCountsByDoctor();
 
     List<ExaminationResponseDTO> getExaminationsByDoctorAndDate(Long doctorId, LocalDate startDate, LocalDate  endDate);
+
+    List<ExaminationResponseDTO> getExamsForPatient(Long patientId);
 }

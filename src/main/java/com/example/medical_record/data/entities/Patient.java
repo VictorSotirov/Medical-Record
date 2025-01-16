@@ -3,8 +3,7 @@ package com.example.medical_record.data.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -12,6 +11,9 @@ import java.util.Set;
 @Table(name = "patients")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Patient
 {
     @Id
@@ -26,9 +28,11 @@ public class Patient
     @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
 
+    @Builder.Default
     @Column(name = "is_health_insurance_paid", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isHealthInsurancePaid = false;
 
+    @Builder.Default
     @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isDeleted = false;
 

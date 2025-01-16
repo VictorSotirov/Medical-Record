@@ -5,15 +5,19 @@ import com.example.medical_record.DTOs.examination.ExaminationResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientRequestDTO;
 import com.example.medical_record.DTOs.patient.PatientResponseDTO;
 import com.example.medical_record.DTOs.patient.PatientsWithExaminationsDTO;
+import com.example.medical_record.data.entities.auth.User;
 import com.example.medical_record.data.repositories.DoctorRepository;
 import com.example.medical_record.data.repositories.PatientRepository;
 import com.example.medical_record.data.entities.Doctor;
 import com.example.medical_record.data.entities.Examination;
 import com.example.medical_record.data.entities.Patient;
+import com.example.medical_record.data.repositories.RoleRepository;
+import com.example.medical_record.data.repositories.UserRepository;
 import com.example.medical_record.exceptions.doctor.DoctorNotFoundException;
 import com.example.medical_record.exceptions.patient.PatientNotFoundException;
 import com.example.medical_record.services.PatientService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +31,12 @@ public class PatientServiceImpl implements PatientService
 
     private final DoctorRepository doctorRepository;
 
+    private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
 
     //CREATE PATIENT
     @Override
@@ -35,6 +45,28 @@ public class PatientServiceImpl implements PatientService
         Patient patient = mapToEntity(patientToCreate);
 
         this.patientRepository.save(patient);
+
+
+
+        User user = new User();
+
+        user.setUsername(patientToCreate.getFirstName() + " " + patientToCreate.getLastName());
+
+        user.setPassword(passwordEncoder.encode("1234")); // And a password
+
+        user.setPatient(patient);
+
+        user.addAuthority(this.roleRepository.findByAuthority("ROLE_PATIENT").orElseThrow(() -> new RuntimeException("Role 'PATIENT' not found.")));
+
+        user.setAccountNonExpired(true);
+
+        user.setAccountNonLocked(true);
+
+        user.setCredentialsNonExpired(true);
+
+        user.setEnabled(true);
+
+        this.userRepository.save(user);
     }
 
     //UPDATE PATIENT

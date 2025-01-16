@@ -126,6 +126,16 @@ public class ExaminationServiceImpl implements ExaminationService
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ExaminationResponseDTO> getExamsForPatient(Long patientId)
+    {
+        List<Examination> exams = this.examinationRepository.findByPatientIdAndIsDeletedFalse(patientId);
+
+        return exams.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
 
     // Helper method to map entity to DTO
     private ExaminationResponseDTO mapToResponseDTO(Examination examination)

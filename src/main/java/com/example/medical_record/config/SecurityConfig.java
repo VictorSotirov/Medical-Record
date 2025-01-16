@@ -25,13 +25,14 @@ public class SecurityConfig
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
+
+/*
         http
                 .csrf().disable() // Disable CSRF for simplicity during development
                 .authorizeHttpRequests()
                 .anyRequest().permitAll(); // Allow all requests without authentication
 
-         /*
-
+ */
         http.authorizeHttpRequests
                 (auth -> auth
                         .requestMatchers("/diagnoses/**").hasAuthority("ADMIN")
@@ -41,8 +42,6 @@ public class SecurityConfig
                 .formLogin(Customizer.withDefaults());
 
         http.authenticationProvider(authenticationProvider());
-
-         */
 
         return http.build();
     }

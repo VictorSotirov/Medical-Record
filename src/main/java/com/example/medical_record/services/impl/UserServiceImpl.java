@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,37 +53,32 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public void createUser(UserDTO userDTO)
+    public void createAdmin(UserDTO userDTO)
     {
-        User user = new User();
+        User admin = new User();
 
-        user.setUsername(userDTO.getUsername());
+        admin.setUsername(userDTO.getUsername());
 
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        admin.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        user.setEnabled(userDTO.isEnabled());
+        admin.setEnabled(true);
 
-        user.setAccountNonExpired(true);
+        admin.setAccountNonExpired(true);
 
-        user.setAccountNonLocked(true);
+        admin.setAccountNonLocked(true);
 
-        user.setCredentialsNonExpired(true);
+        admin.setCredentialsNonExpired(true);
 
-        if (userDTO.getRoleIds() != null && !userDTO.getRoleIds().isEmpty())
-        {
-            Set<Role> roles = this.roleRepository.findAllById(userDTO.getRoleIds())
-                    .stream().collect(Collectors.toSet());
-            user.setAuthorities(roles);
-        }
+        admin.addAuthority(roleRepository.findByAuthority("ADMIN")
+                .orElseThrow(() -> new RuntimeException("Role 'ADMIN' not found.")));
 
-        // 3) Save
-        this.userRepository.save(user);
+
+        this.userRepository.save(admin);
     }
 
     @Override
     public void updateUser(Long id, UserDTO userDTO)
     {
-
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
 
@@ -96,12 +90,15 @@ public class UserServiceImpl implements UserService
         }
 
 
+        /*
         if (userDTO.getRoleIds() != null)
         {
             Set<Role> roles = roleRepository.findAllById(userDTO.getRoleIds())
                     .stream().collect(Collectors.toSet());
             user.setAuthorities(roles);
         }
+
+         */
 
 
         this.userRepository.save(user);
@@ -117,10 +114,6 @@ public class UserServiceImpl implements UserService
 
         this.userRepository.save(userToDelete);
     }
-
-    // -------------------------------------------------
-    // Helpers: map User -> UserDTO and vice versa
-    // -------------------------------------------------
 
     private UserDTO mapToDTO(User user)
     {

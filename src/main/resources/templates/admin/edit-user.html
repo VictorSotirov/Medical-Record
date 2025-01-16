@@ -51,22 +51,6 @@
             <label for="enabled" class="form-check-label">Enabled</label>
         </div>
 
-        <!-- Roles checkboxes again -->
-        <div class="form-group">
-            <label>Roles</label>
-            <div th:each="role : ${roles}">
-                <label class="form-check-label">
-                    <input type="checkbox"
-                           class="form-check-input"
-                           name="roleIds"
-                           th:value="${role.id}"
-                           th:checked="${userForm.roleIds.contains(role.id)}" />
-                    <span th:text="${role.authority}"></span>
-                </label>
-                <br/>
-            </div>
-        </div>
-
         <button type="submit" class="btn btn-primary w-100">Save Changes</button>
     </form>
 

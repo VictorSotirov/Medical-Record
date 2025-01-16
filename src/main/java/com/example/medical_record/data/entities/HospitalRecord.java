@@ -2,8 +2,7 @@ package com.example.medical_record.data.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -11,6 +10,8 @@ import java.time.LocalDate;
 @Table(name = "hospital_records")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class HospitalRecord
 {
     @Id

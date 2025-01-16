@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,11 +20,8 @@ public class Role implements GrantedAuthority
 
     private String authority;
 
-    @ManyToMany
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
+    @ManyToMany(mappedBy = "authorities")  // inverse side
+    private Set<User> users = new HashSet<>();
 
     @Override
     public String getAuthority()

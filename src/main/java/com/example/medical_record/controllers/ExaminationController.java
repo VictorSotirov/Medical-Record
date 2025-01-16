@@ -4,17 +4,21 @@ import com.example.medical_record.DTOs.doctor.DoctorResponseDTO;
 import com.example.medical_record.DTOs.examination.ExaminationEditDTO;
 import com.example.medical_record.DTOs.examination.ExaminationRequestDTO;
 import com.example.medical_record.DTOs.examination.ExaminationResponseDTO;
+import com.example.medical_record.data.entities.auth.User;
 import com.example.medical_record.services.DiagnosisService;
 import com.example.medical_record.services.DoctorService;
 import com.example.medical_record.services.ExaminationService;
 import com.example.medical_record.services.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,6 +37,7 @@ public class ExaminationController
 
     //GET ALL EXAMINATIONS
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String getExaminations(Model model)
     {
         List<ExaminationResponseDTO> examinations = this.examinationService.getAllExaminations();
@@ -46,14 +51,8 @@ public class ExaminationController
         return "examination/examinations";
     }
 
-    //GET SPECIFIC EXAMINATIONS
-    @GetMapping("/{id}")
-    public ExaminationResponseDTO getExaminationById(@PathVariable Long id)
-    {
-        return this.examinationService.getExaminationById(id);
-    }
-
     @GetMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String getCreateExaminationPage(Model model)
     {
         model.addAttribute("examination", new ExaminationRequestDTO());
@@ -69,6 +68,7 @@ public class ExaminationController
 
     // SEND CREATE EXAMINATION FORM
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String createExamination(@ModelAttribute("examination") @Valid ExaminationRequestDTO examinationToCreate, BindingResult result)
     {
         if (result.hasErrors())
@@ -83,6 +83,7 @@ public class ExaminationController
 
     // GET EDIT EXAMINATION FORM
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String getEditExaminationPage(@PathVariable Long id, Model model)
     {
         ExaminationResponseDTO examination = examinationService.getExaminationById(id);
@@ -104,6 +105,7 @@ public class ExaminationController
 
     // POST EDIT EXAMINATION FORM
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String editExamination(@PathVariable Long id, @ModelAttribute("examination") @Valid ExaminationEditDTO examinationToEdit, BindingResult result)
     {
         if (result.hasErrors())
@@ -118,6 +120,7 @@ public class ExaminationController
 
     // DELETE EXAMINATION
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteExamination(@PathVariable Long id)
     {
         this.examinationService.deleteExamination(id);
@@ -143,5 +146,25 @@ public class ExaminationController
         return "examination/filter-examinations-by-doctor-and-date";
     }
 
+    @GetMapping("/my-examinations")
+    @PreAuthorize("hasRole('PATIENT')")
+    public String getMyExams(Model model, Principal principal)
+    {
+        User currentUser = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+
+        if (currentUser.getPatient() == null)
+        {
+
+            return "error/403"; // or some "access denied" page
+        }
+
+        Long patientId = currentUser.getPatient().getId();
+
+        List<ExaminationResponseDTO> exams = examinationService.getExamsForPatient(patientId);
+
+        model.addAttribute("exams", exams);
+
+        return "examination/my-examination";
+    }
 
 }

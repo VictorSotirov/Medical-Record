@@ -1,8 +1,8 @@
 package com.example.medical_record.data.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.util.Set;
 
@@ -10,6 +10,9 @@ import java.util.Set;
 @Table(name = "diagnoses")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Diagnosis
 {
     @Id
