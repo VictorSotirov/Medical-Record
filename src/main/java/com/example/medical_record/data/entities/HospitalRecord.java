@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class HospitalRecord
 {
     @Id
@@ -24,6 +25,7 @@ public class HospitalRecord
     @NotNull
     private LocalDate dischargeDate;
 
+    @Builder.Default
     @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isDeleted = false;
 

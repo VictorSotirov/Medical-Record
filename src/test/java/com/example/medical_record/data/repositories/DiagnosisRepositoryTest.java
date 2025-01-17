@@ -4,6 +4,7 @@ import com.example.medical_record.data.entities.Diagnosis;
 import com.example.medical_record.data.entities.Doctor;
 import com.example.medical_record.data.entities.Examination;
 import com.example.medical_record.data.entities.Patient;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,9 +26,33 @@ class DiagnosisRepositoryTest
     @Autowired
     private TestEntityManager testEntityManager;
 
-    @Test
-    public void findByDescription()
+    private Patient defaultPatient;
+    private Doctor defaultDoctor;
+
+    @BeforeEach
+    void setUp()
     {
+        defaultPatient = Patient.builder()
+                .firstName("Petar")
+                .lastName("Petrov")
+                .build();
+
+        testEntityManager.persistAndFlush(defaultPatient);
+
+
+        defaultDoctor = Doctor.builder()
+                .firstName("Dr.")
+                .lastName("Ivanov")
+                .specialty("General")
+                .build();
+
+        testEntityManager.persistAndFlush(defaultDoctor);
+
+
+    }
+
+    @Test
+    public void findByDescription() {
         Diagnosis diagnosis = Diagnosis.builder()
                 .description("Test Diagnosis")
                 .build();
@@ -37,13 +62,11 @@ class DiagnosisRepositoryTest
         Optional<Diagnosis> result = diagnosisRepository.findByDescription("Test Diagnosis");
 
         assertThat(result).isPresent();
-
         assertThat(result.get().getDescription()).isEqualTo("Test Diagnosis");
     }
 
     @Test
-    public void findByDescriptionNotFound()
-    {
+    public void findByDescriptionNotFound() {
         Diagnosis diagnosis = Diagnosis.builder()
                 .description("Test Diagnosis")
                 .build();
@@ -56,7 +79,7 @@ class DiagnosisRepositoryTest
     }
 
     @Test
-    public void findMostCommonDiagnoses_ShouldReturnDiagnosesOrderedByExaminationCount()
+    public void findMostCommonDiagnosesShouldReturnDiagnosesOrderedByExaminationCount()
     {
         Diagnosis diagnosis1 = Diagnosis.builder().description("Diagnosis 1").build();
         Diagnosis diagnosis2 = Diagnosis.builder().description("Diagnosis 2").build();
@@ -76,29 +99,15 @@ class DiagnosisRepositoryTest
         assertThat(result.get(0)[1]).isEqualTo(3L); // Count of examinations
     }
 
-    private void createExamination(Diagnosis diagnosis)
-    {
-        Patient patient = Patient.builder()
-                .firstName("John")
-                .lastName("Doe")
-                .build();
-        testEntityManager.persistAndFlush(patient);
-
-        Doctor doctor = Doctor.builder()
-                .firstName("Dr.")
-                .lastName("Smith")
-                .specialty("General")
-                .build();
-        testEntityManager.persistAndFlush(doctor);
-
+    private void createExamination(Diagnosis diagnosis) {
         Examination examination = Examination.builder()
                 .examinationDate(LocalDate.now())
                 .treatmentDescription("Treatment for " + diagnosis.getDescription())
                 .sickLeaveDays(5)
                 .sickLeaveStartDate(LocalDate.now().plusDays(1))
                 .diagnosis(diagnosis)
-                .patient(patient) // Replace with a persisted Patient entity if necessary
-                .doctor(doctor)  // Replace with a persisted Doctor entity if necessary
+                .patient(defaultPatient) // Reuse patient from @BeforeEach
+                .doctor(defaultDoctor)  // Reuse doctor from @BeforeEach
                 .build();
         testEntityManager.persistAndFlush(examination);
     }
