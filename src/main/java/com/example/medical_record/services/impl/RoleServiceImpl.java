@@ -36,7 +36,7 @@ public class RoleServiceImpl implements RoleService
     }
 
     @Override
-    public RoleDTO createRole(RoleDTO roleDTO)
+    public void createRole(RoleDTO roleDTO)
     {
         // Optional: check if authority already exists, etc.
         Role role = new Role();
@@ -45,11 +45,11 @@ public class RoleServiceImpl implements RoleService
 
         Role savedRole = roleRepository.save(role);
 
-        return mapToDTO(savedRole);
+        mapToDTO(savedRole);
     }
 
     @Override
-    public RoleDTO updateRole(Long id, RoleDTO roleDTO)
+    public void updateRole(Long id, RoleDTO roleDTO)
     {
         Role existingRole = roleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Role not found with ID: " + id));
@@ -58,7 +58,7 @@ public class RoleServiceImpl implements RoleService
 
         Role updatedRole = roleRepository.save(existingRole);
 
-        return mapToDTO(updatedRole);
+        mapToDTO(updatedRole);
     }
 
     @Override

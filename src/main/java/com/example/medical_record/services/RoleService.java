@@ -8,7 +8,7 @@ public interface RoleService
 {
     List<RoleDTO> getAllRoles();
     RoleDTO getRoleById(Long id);
-    RoleDTO createRole(RoleDTO roleDTO);
-    RoleDTO updateRole(Long id, RoleDTO roleDTO);
+    void createRole(RoleDTO roleDTO);
+    void updateRole(Long id, RoleDTO roleDTO);
     void deleteRole(Long id);
 }

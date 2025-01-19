@@ -1,6 +1,8 @@
 package com.example.medical_record.DTOs.diagnosis;
 
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

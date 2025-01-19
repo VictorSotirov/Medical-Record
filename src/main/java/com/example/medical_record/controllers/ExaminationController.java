@@ -24,6 +24,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
 @RequestMapping("/examinations")
 public class ExaminationController
 {
@@ -37,7 +38,6 @@ public class ExaminationController
 
     //GET ALL EXAMINATIONS
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String getExaminations(Model model)
     {
         List<ExaminationResponseDTO> examinations = this.examinationService.getAllExaminations();
@@ -52,7 +52,6 @@ public class ExaminationController
     }
 
     @GetMapping("/create")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String getCreateExaminationPage(Model model)
     {
         model.addAttribute("examination", new ExaminationRequestDTO());
@@ -68,7 +67,6 @@ public class ExaminationController
 
     // SEND CREATE EXAMINATION FORM
     @PostMapping("/create")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String createExamination(@ModelAttribute("examination") @Valid ExaminationRequestDTO examinationToCreate, BindingResult result)
     {
         if (result.hasErrors())
@@ -83,7 +81,6 @@ public class ExaminationController
 
     // GET EDIT EXAMINATION FORM
     @GetMapping("/edit/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String getEditExaminationPage(@PathVariable Long id, Model model)
     {
         ExaminationResponseDTO examination = examinationService.getExaminationById(id);
@@ -105,7 +102,6 @@ public class ExaminationController
 
     // POST EDIT EXAMINATION FORM
     @PostMapping("/edit/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String editExamination(@PathVariable Long id, @ModelAttribute("examination") @Valid ExaminationEditDTO examinationToEdit, BindingResult result)
     {
         if (result.hasErrors())

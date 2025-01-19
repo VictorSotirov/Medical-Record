@@ -11,6 +11,7 @@ import com.example.medical_record.services.PatientService;
 import com.example.medical_record.services.impl.MonthWithHospitalRecordsDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
 @RequestMapping("/hospital-records")
 public class HospitalRecordController
 {
@@ -40,13 +42,6 @@ public class HospitalRecordController
         model.addAttribute("hospitalRecords", hospitalRecords);
 
         return "hospital-record/hospital-records";
-    }
-
-    //GET SPECIFIC HOSPITAL RECORD
-    @GetMapping("/{id}")
-    public HospitalRecordResponseDTO getHospitalRecordById(@PathVariable Long id)
-    {
-        return this.hospitalRecordService.getHospitalRecordById(id);
     }
 
     //GET CREATE HOSPITAL RECORD FORM
@@ -82,7 +77,6 @@ public class HospitalRecordController
     {
         HospitalRecordResponseDTO hospitalRecord = hospitalRecordService.getHospitalRecordById(id);
 
-        //PODLEJI NA IZTRIVANE
         HospitalRecordRequestDTO hospitalRecordRequest = new HospitalRecordRequestDTO();
 
         model.addAttribute("hospitalRecordRequest", hospitalRecordRequest);

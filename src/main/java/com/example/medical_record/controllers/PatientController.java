@@ -37,10 +37,9 @@ public class PatientController
 
     private final DiagnosisService diagnosisService;
 
-    private final ExaminationService examinationService;
-
     //GET ALL PATIENTS
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public String getPatients(Model model)
     {
         List<PatientResponseDTO> patients = this.patientService.getAllPatients();
@@ -60,6 +59,7 @@ public class PatientController
 
     //GET CREATE PATIENT FORM
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getCreatePatientPage(Model model)
     {
         model.addAttribute("patient", new PatientRequestDTO());
@@ -71,6 +71,7 @@ public class PatientController
 
     //SEND PATIENT FORM
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createPatient(@ModelAttribute("patient") @Valid PatientRequestDTO patientToCreate, BindingResult result) throws RuntimeException
     {
         if(result.hasErrors())
@@ -85,6 +86,7 @@ public class PatientController
 
     //GET EDIT PATIENT FORM
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getEditPatientPage(@PathVariable Long id, Model model)
     {
         try
@@ -122,6 +124,7 @@ public class PatientController
 
     //SEND EDIT PATIENT FORM
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String editPatient(@PathVariable Long id, @ModelAttribute("patient") @Valid PatientRequestDTO patientToEdit, BindingResult result, Model model)
     {
         if(result.hasErrors())
@@ -151,6 +154,7 @@ public class PatientController
 
     //DELETE PATIENT
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deletePatient(@PathVariable Long id, Model model)
     {
         try
@@ -170,6 +174,7 @@ public class PatientController
 
     //GET ALL PATIENTS WITH SAME DIAGNOSIS
     @GetMapping("/filter-by-diagnosis")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String filterPatientsByDiagnosis(@RequestParam(required = false) Long diagnosisId, Model model)
     {
 
@@ -188,6 +193,7 @@ public class PatientController
 
     //GET ALL PATIENTS WITH SAME DOCTOR
     @GetMapping("/filter-by-doctor")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String filterPatientsByDoctor(@RequestParam(required = false) Long doctorId, Model model)
     {
         List<PatientResponseDTO> patients = this.patientService.getPatientsByDoctorId(doctorId);
@@ -208,6 +214,7 @@ public class PatientController
     }
 
     @GetMapping("/with-examinations")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public String getPatientsWithExaminations(Model model)
     {
         List<PatientsWithExaminationsDTO> patientsWithExaminations = patientService.getAllPatientsWithExaminations();

@@ -89,18 +89,6 @@ public class UserServiceImpl implements UserService
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
 
-
-        /*
-        if (userDTO.getRoleIds() != null)
-        {
-            Set<Role> roles = roleRepository.findAllById(userDTO.getRoleIds())
-                    .stream().collect(Collectors.toSet());
-            user.setAuthorities(roles);
-        }
-
-         */
-
-
         this.userRepository.save(user);
     }
 

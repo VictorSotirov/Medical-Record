@@ -216,12 +216,12 @@ public class HospitalRecordServiceImpl implements HospitalRecordService
         hospitalRecord.setDischargeDate(hospitalRecordRequestDTO.getDischargeDate());
 
         // Map patient ID to Patient entity
-        Patient patient = this.patientRepository.findById(hospitalRecordRequestDTO.getPatientId())
+        Patient patient = this.patientRepository.findByIdAndIsDeletedFalse(hospitalRecordRequestDTO.getPatientId())
                 .orElseThrow(() -> new RuntimeException("Patient with id " + hospitalRecordRequestDTO.getPatientId() + " not found."));
         hospitalRecord.setPatient(patient);
 
         // Map doctor ID to Doctor entity
-        Doctor doctor = this.doctorRepository.findById(hospitalRecordRequestDTO.getDoctorId())
+        Doctor doctor = this.doctorRepository.findByIdAndIsDeletedFalse(hospitalRecordRequestDTO.getDoctorId())
                 .orElseThrow(() -> new RuntimeException("Doctor with id " + hospitalRecordRequestDTO.getDoctorId() + " not found."));
         hospitalRecord.setDoctor(doctor);
 

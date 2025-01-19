@@ -1,10 +1,11 @@
 package com.example.medical_record.DTOs.diagnosis;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DiagnosisResponseDTO
 {
     private Long id;

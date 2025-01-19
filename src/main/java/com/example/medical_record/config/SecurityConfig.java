@@ -35,7 +35,7 @@ public class SecurityConfig
  */
         http.authorizeHttpRequests
                 (auth -> auth
-                        .requestMatchers("/diagnoses/**").hasAuthority("ADMIN")
+                        //.requestMatchers("/diagnoses/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

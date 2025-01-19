@@ -202,12 +202,12 @@ public class ExaminationServiceImpl implements ExaminationService
         examination.setSickLeaveStartDate(examinationRequestDTO.getSickLeaveStartDate());
 
         // Map patient ID to Patient entity
-        Patient patient = this.patientRepository.findById(examinationRequestDTO.getPatientId())
+        Patient patient = this.patientRepository.findByIdAndIsDeletedFalse(examinationRequestDTO.getPatientId())
                 .orElseThrow(() -> new RuntimeException("Patient with id " + examinationRequestDTO.getPatientId() + " not found."));
         examination.setPatient(patient);
 
         // Map doctor ID to Doctor entity
-        Doctor doctor = this.doctorRepository.findById(examinationRequestDTO.getDoctorId())
+        Doctor doctor = this.doctorRepository.findByIdAndIsDeletedFalse(examinationRequestDTO.getDoctorId())
                 .orElseThrow(() -> new RuntimeException("Doctor with id " + examinationRequestDTO.getDoctorId() + " not found."));
         examination.setDoctor(doctor);
 

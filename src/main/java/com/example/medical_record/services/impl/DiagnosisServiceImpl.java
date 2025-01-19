@@ -60,7 +60,6 @@ public class DiagnosisServiceImpl implements DiagnosisService
     }
 
     //DELETE DIAGNOSIS
-    // Potentially REFACTOR FOR SOFT DELETE
     @Override
     public void deleteDiagnosis(Long id) throws DiagnosisNotFoundException
     {

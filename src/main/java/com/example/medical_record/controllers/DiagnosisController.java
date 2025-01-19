@@ -18,7 +18,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/diagnoses")
 public class DiagnosisController
 {
@@ -26,17 +25,19 @@ public class DiagnosisController
 
     //GET ALL DIAGNOSES
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public String getDiagnoses(Model model)
     {
         List<DiagnosisResponseDTO> diagnoses = this.diagnosisService.getAllDiagnoses();
 
-        model.addAttribute("diagnoses", diagnoses); // Add diagnoses to the model
+        model.addAttribute("diagnoses", diagnoses);
 
-        return "diagnosis/diagnoses"; // Return the correct Thymeleaf template
+        return "diagnosis/diagnoses";
     }
 
     //GET CREATE DIAGNOSIS FORM
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getCreateDiagnosisPage(Model model)
     {
         model.addAttribute("diagnosis", new DiagnosisRequestDTO());
@@ -46,6 +47,7 @@ public class DiagnosisController
 
     //SEND DIAGNOSIS FORM
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createDiagnosis(@ModelAttribute("diagnosis") @Valid DiagnosisRequestDTO diagnosisToCreate,
                                   BindingResult result, Model model)
     {
@@ -60,9 +62,9 @@ public class DiagnosisController
         }
         catch (DiagnosisAlreadyExistsException e)
         {
-            model.addAttribute("errorMessage", e.getMessage()); // Add exception message to the model
+            model.addAttribute("errorMessage", e.getMessage());
 
-            return "diagnosis/create-diagnosis"; // Return to the form with the error message
+            return "diagnosis/create-diagnosis";
         }
 
         return "redirect:/diagnoses";
@@ -70,6 +72,7 @@ public class DiagnosisController
 
     //GET EDIT DIAGNOSIS FORM
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getEditDiagnosisPage(@PathVariable Long id, Model model)
     {
         try
@@ -90,6 +93,7 @@ public class DiagnosisController
 
     //SEND EDIT DIAGNOSIS FORM
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String editDiagnosis(@PathVariable Long id, @ModelAttribute("diagnosis") @Valid DiagnosisRequestDTO diagnosisToEdit, BindingResult result, Model model)
     {
 
@@ -132,6 +136,7 @@ public class DiagnosisController
 
     //DELETE DIAGNOSIS
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteDiagnosis(@PathVariable Long id, Model model)
     {
         try
@@ -150,6 +155,7 @@ public class DiagnosisController
 
     //GET MOST COMMON DIAGNOSES
     @GetMapping("/most-common")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getMostCommonDiagnoses(Model model)
     {
         List<DiagnosisFrequencyDTO> mostCommonDiagnoses = diagnosisService.getMostCommonDiagnoses();

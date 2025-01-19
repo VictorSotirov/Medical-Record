@@ -6,6 +6,7 @@ import com.example.medical_record.services.RoleService;
 import com.example.medical_record.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,17 +16,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
-//@PreAuthorize("hasAuthority('ADMIN')") // Only allow ADMIN to access these endpoints
+@PreAuthorize("hasRole('ADMIN')")
 @AllArgsConstructor
 public class AdminController
 {
     private final UserService userService;
 
     private final RoleService roleService;
-
-    // ----------------------------------------
-    //  ROLE CRUD
-    // ----------------------------------------
 
 
     @GetMapping
@@ -44,10 +41,6 @@ public class AdminController
         return "admin/roles";
     }
 
-    /**
-     * Show a form for creating a new role (GET).
-     * Renders "admin/create-role.html"
-     */
     @GetMapping("/roles/create")
     public String showCreateRoleForm(Model model)
     {
@@ -56,16 +49,11 @@ public class AdminController
         return "admin/create-role";
     }
 
-    /**
-     * Handle the creation of a new role (POST).
-     * After creation, redirect back to /admin/roles
-     */
     @PostMapping("/roles/create")
     public String createRole(@ModelAttribute("roleForm") @Valid RoleDTO roleDTO, BindingResult result
     ) {
         if (result.hasErrors())
         {
-            // If validation fails, re-display the form with errors
             return "admin/create-role";
         }
 
@@ -74,10 +62,6 @@ public class AdminController
         return "redirect:/admin/roles";
     }
 
-    /**
-     * Show a form to edit an existing role (GET).
-     * Renders "admin/edit-role.html"
-     */
     @GetMapping("/roles/edit/{id}")
     public String showEditRoleForm(@PathVariable Long id, Model model)
     {
@@ -90,10 +74,6 @@ public class AdminController
         return "admin/edit-role";
     }
 
-    /**
-     * Handle role edits (POST).
-     * After update, redirect to /admin/roles
-     */
     @PostMapping("/roles/edit/{id}")
     public String editRole(@PathVariable Long id, @ModelAttribute("roleForm") @Valid RoleDTO roleDTO, BindingResult result,
             Model model)
@@ -110,10 +90,6 @@ public class AdminController
         return "redirect:/admin/roles";
     }
 
-    /**
-     * Delete a role (GET or POST).
-     * After deletion, redirect to /admin/roles
-     */
     @GetMapping("/roles/delete/{id}")
     public String deleteRole(@PathVariable Long id)
     {
@@ -122,14 +98,6 @@ public class AdminController
         return "redirect:/admin/roles";
     }
 
-
-    // ----------------------------------------
-    //  USERS CRUD
-    // ----------------------------------------
-
-    /**
-     * Display all users
-     */
     @GetMapping("/users")
     public String listAllUsers(Model model)
     {
@@ -138,9 +106,6 @@ public class AdminController
         return "admin/users";
     }
 
-    /**
-     * Show form to create a new user
-     */
     @GetMapping("/users/create")
     public String showCreateUserForm(Model model)
     {
@@ -153,9 +118,6 @@ public class AdminController
         return "admin/create-admin";
     }
 
-    /**
-     * Handle creating a new user (POST)
-     */
     @PostMapping("/users/create")
     public String createUser(
             @ModelAttribute("userForm") @Valid UserDTO userDTO,
@@ -173,9 +135,6 @@ public class AdminController
         return "redirect:/admin/users";
     }
 
-    /**
-     * Show form to edit an existing user
-     */
     @GetMapping("/users/edit/{id}")
     public String showEditUserForm(@PathVariable Long id, Model model)
     {
@@ -188,9 +147,6 @@ public class AdminController
         return "admin/edit-user";
     }
 
-    /**
-     * Handle editing a user (POST)
-     */
     @PostMapping("/users/edit/{id}")
     public String editUser(
             @PathVariable Long id,
@@ -210,9 +166,6 @@ public class AdminController
         return "redirect:/admin/users";
     }
 
-    /**
-     * Delete user (GET or POST)
-     */
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable Long id)
     {
